@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="150dp">
+
+	<FrameLayout
+		android:id="@+id/layout_poster"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+
+		<ImageView
+			android:id="@+id/img_poster"
+			android:layout_width="100dp"
+			android:layout_height="150dp"
+			android:adjustViewBounds="true"
+			android:contentDescription="@string/poster_image"
+			android:scaleType="centerCrop"
+			android:src="@android:color/background_light" />
+
+		<TextView
+			android:id="@+id/tv_rating"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|end"
+			android:background="@color/colorPrimary"
+			android:padding="4dp"
+			android:textColor="@android:color/white"
+			android:textSize="18sp"
+			tools:text="10" />
+	</FrameLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="124dp"
+		android:layout_alignParentBottom="true"
+		android:layout_toEndOf="@+id/layout_poster"
+		android:padding="8dp">
+
+		<TextView
+			android:id="@+id/tv_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="4dp"
+			android:lines="1"
+			android:textColor="@color/colorPrimary"
+			android:textSize="24sp"
+			android:textStyle="bold"
+			tools:text="Movie Title" />
+
+		<TextView
+			android:id="@+id/tv_text_release"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/tv_title"
+			android:layout_marginBottom="4dp"
+			android:text="@string/release" />
+
+		<TextView
+			android:id="@+id/tv_release"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/tv_title"
+			android:layout_marginStart="4dp"
+			android:layout_marginBottom="4dp"
+			android:layout_toEndOf="@id/tv_text_release"
+			android:textColor="@color/colorPrimary"
+			tools:text="2019" />
+
+		<TextView
+			android:id="@+id/tv_overview"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/tv_text_release"
+			tools:text="@tools:sample/lorem/random" />
+	</RelativeLayout>
+</RelativeLayout>
