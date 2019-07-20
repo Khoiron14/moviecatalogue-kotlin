@@ -29,13 +29,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         supportActionBar?.title = ""
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
     }
 
     private fun loadMovieDetail() {
