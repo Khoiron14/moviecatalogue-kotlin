@@ -1,10 +1,10 @@
 package com.khoiron14.moviecatalogue.service
 
 import com.khoiron14.moviecatalogue.BuildConfig
-import com.khoiron14.moviecatalogue.model.Movie
-import com.khoiron14.moviecatalogue.model.MovieResponse
-import com.khoiron14.moviecatalogue.model.Tvshow
-import com.khoiron14.moviecatalogue.model.TvshowResponse
+import com.khoiron14.moviecatalogue.model.movie.Movie
+import com.khoiron14.moviecatalogue.model.movie.MovieResponse
+import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
+import com.khoiron14.moviecatalogue.model.tvshow.TvshowResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

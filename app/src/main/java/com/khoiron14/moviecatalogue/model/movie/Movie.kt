@@ -1,4 +1,4 @@
-package com.khoiron14.moviecatalogue.model
+package com.khoiron14.moviecatalogue.model.movie
 
 import com.squareup.moshi.Json
 

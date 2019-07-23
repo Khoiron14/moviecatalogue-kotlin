@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.*
-import com.khoiron14.moviecatalogue.model.Tvshow
+import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
 import com.khoiron14.moviecatalogue.service.RetrofitFactory
 import kotlinx.android.synthetic.main.activity_tvshow_detail.*
 import kotlinx.coroutines.CoroutineScope

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.BuildConfig
 import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.model.Movie
+import com.khoiron14.moviecatalogue.model.movie.Movie
 import kotlinx.android.synthetic.main.item_movie.view.*
 
 /**
