@@ -1,4 +1,4 @@
-package com.khoiron14.moviecatalogue.view
+package com.khoiron14.moviecatalogue.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.view.movie.MovieFragment
-import com.khoiron14.moviecatalogue.view.tvshow.TvshowFragment
+import com.khoiron14.moviecatalogue.ui.movie.MovieFragment
+import com.khoiron14.moviecatalogue.ui.tvshow.TvshowFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

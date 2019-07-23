@@ -7,7 +7,7 @@
 	android:layout_marginStart="8dp"
 	android:layout_marginTop="8dp"
 	android:layout_marginEnd="8dp"
-	tools:context=".view.movie.MovieFragment">
+	tools:context=".ui.movie.MovieFragment">
 
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/rv_list_movie"
@@ -16,5 +16,12 @@
 		app:layoutManager="android.support.v7.widget.GridLayoutManager"
 		app:spanCount="3"
 		tools:listitem="@layout/item_movie" />
+
+	<ProgressBar
+		android:id="@+id/progress_bar"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_margin="16dp" />
 
 </RelativeLayout>
