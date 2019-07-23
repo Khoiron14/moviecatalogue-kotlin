@@ -1,5 +1,7 @@
 package com.khoiron14.moviecatalogue.ui.movie
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -7,22 +9,28 @@ import android.view.View
 import android.view.ViewGroup
 import com.khoiron14.moviecatalogue.R
 import com.khoiron14.moviecatalogue.gone
-import com.khoiron14.moviecatalogue.service.RetrofitFactory
+import com.khoiron14.moviecatalogue.model.movie.Movie
+import com.khoiron14.moviecatalogue.ui.movie.detail.MovieDetailActivity
 import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.fragment_movie.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jetbrains.anko.support.v4.startActivity
-import org.jetbrains.anko.support.v4.toast
-import retrofit2.HttpException
 
 /**
  * A simple [Fragment] subclass.
  *
  */
 class MovieFragment : Fragment() {
+
+    private lateinit var adapter: MovieAdapter
+    private lateinit var viewModel: MovieViewModel
+
+    private val getMovieList =
+        Observer<List<Movie>> { movieList ->
+            if (movieList != null) {
+                adapter.setData(movieList)
+                showLoading(false)
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,33 +43,23 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val movieAdapter = MovieAdapter(listOf()) {
+        viewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
+        viewModel.getMovieList().observe(this, getMovieList)
+
+        adapter = MovieAdapter {
             startActivity<MovieDetailActivity>(MovieDetailActivity.EXTRA_MOVIE to it.id)
         }
-        rv_list_movie.apply { adapter = movieAdapter }
+        rv_list_movie.adapter = adapter
 
-        val service = RetrofitFactory.service()
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModel.setMovieList()
+        showLoading(true)
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
             progress_bar.visible()
-            val response = service.getMovieList()
-            withContext(Dispatchers.Main) {
-                try {
-                    if (response.isSuccessful) {
-                        movieAdapter.movies = response.body()?.results
-                        movieAdapter.notifyDataSetChanged()
-                        progress_bar.gone()
-                    } else {
-                        toast("Error ${response.code()}")
-                        progress_bar.gone()
-                    }
-                } catch (e: HttpException) {
-                    toast("Exception ${e.message()}")
-                    progress_bar.gone()
-                } catch (e: Throwable) {
-                    toast("Oops something went wrong")
-                    progress_bar.gone()
-                }
-            }
+        } else {
+            progress_bar.gone()
         }
     }
 }

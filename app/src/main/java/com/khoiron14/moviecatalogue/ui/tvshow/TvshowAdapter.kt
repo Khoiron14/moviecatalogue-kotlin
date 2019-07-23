@@ -13,8 +13,16 @@ import kotlinx.android.synthetic.main.item_movie.view.*
 /**
  * Created by khoiron14 on 7/3/2019.
  */
-class TvshowAdapter(var tvshows: List<Tvshow>?, private val listener: (Tvshow) -> Unit) :
+class TvshowAdapter(private val listener: (Tvshow) -> Unit) :
     RecyclerView.Adapter<TvshowAdapter.ViewHolder>() {
+
+    private var tvshows: List<Tvshow> = listOf()
+
+    fun setData(items: List<Tvshow>) {
+        tvshows = items
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(R.layout.item_movie, p0, false)
         val result = ViewHolder(view)
@@ -23,18 +31,17 @@ class TvshowAdapter(var tvshows: List<Tvshow>?, private val listener: (Tvshow) -
             val position = result.adapterPosition
 
             if (position != RecyclerView.NO_POSITION) {
-                val tvshow: Tvshow = tvshows!![position]
+                val tvshow: Tvshow = tvshows[position]
                 listener(tvshow)
             }
         }
-
         return result
     }
 
-    override fun getItemCount(): Int = tvshows!!.size
+    override fun getItemCount(): Int = tvshows.size
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        p0.bind(tvshows!![p1])
+        p0.bind(tvshows[p1])
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -44,6 +51,7 @@ class TvshowAdapter(var tvshows: List<Tvshow>?, private val listener: (Tvshow) -
             Glide.with(itemView)
                 .load(BuildConfig.BASE_IMAGE_PATH_URL + tvshow.posterPath)
                 .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
                 .into(itemView.img_poster)
         }
     }

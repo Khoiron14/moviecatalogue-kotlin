@@ -1,7 +1,5 @@
 package com.khoiron14.moviecatalogue.model.movie
 
-import com.khoiron14.moviecatalogue.model.movie.Movie
-
 /**
  * Created by khoiron14 on 7/22/2019.
  */

@@ -13,11 +13,11 @@
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
 		<activity
-			android:name=".ui.tvshow.TvshowDetailActivity"
+			android:name=".ui.tvshow.detail.TvshowDetailActivity"
 			android:parentActivityName=".ui.MainActivity"
 			android:theme="@style/AppTheme.TransparentActionBar" />
 		<activity
-			android:name=".ui.movie.MovieDetailActivity"
+			android:name=".ui.movie.detail.MovieDetailActivity"
 			android:parentActivityName=".ui.MainActivity"
 			android:theme="@style/AppTheme.TransparentActionBar" />
 		<activity

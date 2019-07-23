@@ -1,5 +1,7 @@
 package com.khoiron14.moviecatalogue.ui.tvshow
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -7,22 +9,28 @@ import android.view.View
 import android.view.ViewGroup
 import com.khoiron14.moviecatalogue.R
 import com.khoiron14.moviecatalogue.gone
-import com.khoiron14.moviecatalogue.service.RetrofitFactory
+import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
+import com.khoiron14.moviecatalogue.ui.tvshow.detail.TvshowDetailActivity
 import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.fragment_tvshow.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.jetbrains.anko.support.v4.startActivity
-import org.jetbrains.anko.support.v4.toast
-import retrofit2.HttpException
 
 /**
  * A simple [Fragment] subclass.
  *
  */
 class TvshowFragment : Fragment() {
+
+    private lateinit var adapter: TvshowAdapter
+    private lateinit var viewModel: TvshowViewModel
+
+    private val getTvshowList =
+        Observer<List<Tvshow>> { tvshowList ->
+            if (tvshowList != null) {
+                adapter.setData(tvshowList)
+                showLoading(false)
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,33 +43,23 @@ class TvshowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tvshowAdapter = TvshowAdapter(listOf()) {
+        viewModel = ViewModelProviders.of(this).get(TvshowViewModel::class.java)
+        viewModel.getTvshowList().observe(this, getTvshowList)
+
+        adapter = TvshowAdapter {
             startActivity<TvshowDetailActivity>(TvshowDetailActivity.EXTRA_TVSHOW to it.id)
         }
-        rv_list_tvshow.apply { adapter = tvshowAdapter }
+        rv_list_tvshow.adapter = adapter
 
-        val service = RetrofitFactory.service()
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModel.setTvshowList()
+        showLoading(true)
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
             progress_bar.visible()
-            val response = service.getTvshowList()
-            withContext(Dispatchers.Main) {
-                try {
-                    if (response.isSuccessful) {
-                        tvshowAdapter.tvshows = response.body()?.results
-                        tvshowAdapter.notifyDataSetChanged()
-                        progress_bar.gone()
-                    } else {
-                        toast("Error ${response.code()}")
-                        progress_bar.gone()
-                    }
-                } catch (e: HttpException) {
-                    toast("Exception ${e.message()}")
-                    progress_bar.gone()
-                } catch (e: Throwable) {
-                    toast("Oops something went wrong")
-                    progress_bar.gone()
-                }
-            }
+        } else {
+            progress_bar.gone()
         }
     }
 }
