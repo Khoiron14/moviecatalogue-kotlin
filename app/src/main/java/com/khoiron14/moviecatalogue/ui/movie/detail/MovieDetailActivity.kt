@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.model.movie.Movie
 import kotlinx.android.synthetic.main.activity_movie_detail.*
+import org.jetbrains.anko.contentView
+import org.jetbrains.anko.design.longSnackbar
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -23,7 +25,9 @@ class MovieDetailActivity : AppCompatActivity() {
         Observer<Movie> { movie ->
             if (movie != null) {
                 loadMovieDetail(movie)
-                showLoading(false)
+                showLoading(false, progress_bar)
+                tv_text_release.visible()
+                tv_text_overview.visible()
             }
         }
 
@@ -31,13 +35,32 @@ class MovieDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_detail)
 
+        supportActionBar?.title = ""
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (connectionAvaiable(this)) {
+            connected()
+        } else {
+            disconnected()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (connectionAvaiable(this)) {
+            connected()
+        } else {
+            disconnected()
+        }
+    }
+
+    private fun fetchData() {
         viewModel = ViewModelProviders.of(this).get(MovieDetailViewModel::class.java)
         viewModel.getMovie().observe(this, getMovie)
         viewModel.setMovie(intent.getIntExtra(EXTRA_MOVIE, 0))
-        showLoading(true)
-
-        supportActionBar?.title = ""
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun loadMovieDetail(movie: Movie) {
@@ -62,13 +85,15 @@ class MovieDetailActivity : AppCompatActivity() {
             .into(img_poster)
     }
 
-    private fun showLoading(state: Boolean) {
-        if (state) {
-            progress_bar.visible()
-        } else {
-            progress_bar.gone()
-            tv_text_release.visible()
-            tv_text_overview.visible()
-        }
+    private fun connected() {
+        fetchData()
+        showLoading(true, progress_bar)
+    }
+
+    private fun disconnected() {
+        tv_text_release.gone()
+        tv_text_overview.gone()
+        showLoading(false, progress_bar)
+        contentView?.longSnackbar(R.string.no_connection)
     }
 }

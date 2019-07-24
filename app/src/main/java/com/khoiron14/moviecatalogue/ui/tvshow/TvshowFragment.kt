@@ -1,5 +1,6 @@
 package com.khoiron14.moviecatalogue.ui.tvshow
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -7,11 +8,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.gone
+import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
 import com.khoiron14.moviecatalogue.ui.tvshow.detail.TvshowDetailActivity
-import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.fragment_tvshow.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -28,7 +27,7 @@ class TvshowFragment : Fragment() {
         Observer<List<Tvshow>> { tvshowList ->
             if (tvshowList != null) {
                 adapter.setData(tvshowList)
-                showLoading(false)
+                showLoading(false, progress_bar)
             }
         }
 
@@ -43,23 +42,46 @@ class TvshowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(TvshowViewModel::class.java)
-        viewModel.getTvshowList().observe(this, getTvshowList)
-
         adapter = TvshowAdapter {
             startActivity<TvshowDetailActivity>(TvshowDetailActivity.EXTRA_TVSHOW to it.id)
         }
         rv_list_tvshow.adapter = adapter
-
-        viewModel.setTvshowList()
-        showLoading(true)
     }
 
-    private fun showLoading(state: Boolean) {
-        if (state) {
-            progress_bar.visible()
+    override fun onStart() {
+        super.onStart()
+        if (connectionAvaiable(activity as Activity)) {
+            connected()
         } else {
-            progress_bar.gone()
+            disconnected()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (connectionAvaiable(activity as Activity)) {
+            connected()
+        } else {
+            disconnected()
+        }
+    }
+
+    private fun fetchData() {
+        viewModel = ViewModelProviders.of(this).get(TvshowViewModel::class.java)
+        viewModel.getTvshowList().observe(this, getTvshowList)
+        viewModel.setTvshowList()
+    }
+
+    private fun connected() {
+        rv_list_tvshow.visible()
+        tv_no_connection.gone()
+        fetchData()
+        showLoading(true, progress_bar)
+    }
+
+    private fun disconnected() {
+        rv_list_tvshow.gone()
+        tv_no_connection.visible()
+        showLoading(false, progress_bar)
     }
 }

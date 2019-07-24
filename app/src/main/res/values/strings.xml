@@ -8,4 +8,5 @@
 	<string name="release">Release</string>
 	<string name="overview">Overview</string>
 	<string name="first_air">First Air</string>
+	<string name="no_connection">No connection</string>
 </resources>

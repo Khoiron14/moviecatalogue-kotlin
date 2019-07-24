@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
 import kotlinx.android.synthetic.main.activity_tvshow_detail.*
+import org.jetbrains.anko.contentView
+import org.jetbrains.anko.design.longSnackbar
 
 class TvshowDetailActivity : AppCompatActivity() {
 
@@ -23,7 +25,9 @@ class TvshowDetailActivity : AppCompatActivity() {
         Observer<Tvshow> { tvshow ->
             if (tvshow != null) {
                 loadTvshowDetail(tvshow)
-                showLoading(false)
+                showLoading(false, progress_bar)
+                tv_text_first_air.visible()
+                tv_text_overview.visible()
             }
         }
 
@@ -31,13 +35,32 @@ class TvshowDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tvshow_detail)
 
+        supportActionBar?.title = ""
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (connectionAvaiable(this)) {
+            connected()
+        } else {
+            disconnected()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (connectionAvaiable(this)) {
+            connected()
+        } else {
+            disconnected()
+        }
+    }
+
+    private fun fetchData() {
         viewModel = ViewModelProviders.of(this).get(TvshowDetailViewModel::class.java)
         viewModel.getTvshow().observe(this, getTvshow)
         viewModel.setTvshow(intent.getIntExtra(EXTRA_TVSHOW, 0))
-        showLoading(true)
-
-        supportActionBar?.title = ""
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private fun loadTvshowDetail(tvshow: Tvshow) {
@@ -62,13 +85,15 @@ class TvshowDetailActivity : AppCompatActivity() {
             .into(img_poster)
     }
 
-    private fun showLoading(state: Boolean) {
-        if (state) {
-            progress_bar.visible()
-        } else {
-            progress_bar.gone()
-            tv_text_first_air.visible()
-            tv_text_overview.visible()
-        }
+    private fun connected() {
+        fetchData()
+        showLoading(true, progress_bar)
+    }
+
+    private fun disconnected() {
+        tv_text_first_air.gone()
+        tv_text_overview.gone()
+        showLoading(false, progress_bar)
+        contentView?.longSnackbar(R.string.no_connection)
     }
 }
