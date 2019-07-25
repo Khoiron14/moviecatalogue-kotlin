@@ -45,4 +45,4 @@ fun showLoading(state: Boolean, progressBar: ProgressBar) {
     }
 }
 
-val currentLocale = ConfigurationCompat.getLocales(Resources.getSystem().configuration).get(0)
+val currentLocale: Locale = ConfigurationCompat.getLocales(Resources.getSystem().configuration)[0]
