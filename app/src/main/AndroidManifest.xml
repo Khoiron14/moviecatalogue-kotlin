@@ -17,11 +17,11 @@
 		android:theme="@style/AppTheme"
 		tools:ignore="GoogleAppIndexingWarning">
 		<activity
-			android:name=".ui.tvshow.detail.TvshowDetailActivity"
+			android:name=".ui.detail.TvshowDetailActivity"
 			android:parentActivityName=".ui.MainActivity"
 			android:theme="@style/AppTheme.TransparentActionBar" />
 		<activity
-			android:name=".ui.movie.detail.MovieDetailActivity"
+			android:name=".ui.detail.MovieDetailActivity"
 			android:parentActivityName=".ui.MainActivity"
 			android:theme="@style/AppTheme.TransparentActionBar" />
 		<activity

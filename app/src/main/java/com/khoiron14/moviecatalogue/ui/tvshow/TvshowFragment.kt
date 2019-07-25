@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
-import com.khoiron14.moviecatalogue.ui.tvshow.detail.TvshowDetailActivity
+import com.khoiron14.moviecatalogue.ui.detail.TvshowDetailActivity
 import kotlinx.android.synthetic.main.fragment_tvshow.*
 import org.jetbrains.anko.support.v4.startActivity
 

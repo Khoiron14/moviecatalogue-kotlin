@@ -1,9 +1,9 @@
-package com.khoiron14.moviecatalogue.ui.tvshow.detail
+package com.khoiron14.moviecatalogue.ui.detail
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
+import com.khoiron14.moviecatalogue.model.movie.Movie
 import com.khoiron14.moviecatalogue.service.RetrofitFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,18 +14,18 @@ import retrofit2.HttpException
 /**
  * Created by khoiron14 on 7/23/2019.
  */
-class TvshowDetailViewModel : ViewModel() {
+class MovieDetailViewModel : ViewModel() {
 
-    private val tvshow = MutableLiveData<Tvshow>()
+    private val movie = MutableLiveData<Movie>()
 
-    fun setTvshow(id: Int) {
+    fun setMovie(id: Int) {
         val service = RetrofitFactory.service()
         CoroutineScope(Dispatchers.IO).launch {
-            val response = service.getTvshow(id)
+            val response = service.getMovie(id)
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {
-                        response.body()?.let { tvshow.postValue(it) }
+                        response.body()?.let { movie.postValue(it) }
                     } else {
                         error("Error ${response.code()}")
                     }
@@ -38,5 +38,5 @@ class TvshowDetailViewModel : ViewModel() {
         }
     }
 
-    fun getTvshow(): LiveData<Tvshow> = tvshow
+    fun getMovie(): LiveData<Movie> = movie
 }
