@@ -3,6 +3,7 @@ package com.khoiron14.moviecatalogue.ui.detail
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.khoiron14.moviecatalogue.currentLocale
 import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
 import com.khoiron14.moviecatalogue.service.RetrofitFactory
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +22,7 @@ class TvshowDetailViewModel : ViewModel() {
     fun setTvshow(id: Int) {
         val service = RetrofitFactory.service()
         CoroutineScope(Dispatchers.IO).launch {
-            val response = service.getTvshow(id)
+            val response = service.getTvshow(id, currentLocale.toLanguageTag())
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {

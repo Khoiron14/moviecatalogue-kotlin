@@ -2,7 +2,9 @@ package com.khoiron14.moviecatalogue
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
 import android.net.ConnectivityManager
+import android.support.v4.os.ConfigurationCompat
 import android.view.View
 import android.widget.ProgressBar
 import java.text.SimpleDateFormat
@@ -42,3 +44,5 @@ fun showLoading(state: Boolean, progressBar: ProgressBar) {
         progressBar.gone()
     }
 }
+
+val currentLocale = ConfigurationCompat.getLocales(Resources.getSystem().configuration).get(0)

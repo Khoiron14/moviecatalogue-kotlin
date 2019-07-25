@@ -3,6 +3,7 @@ package com.khoiron14.moviecatalogue.ui.movie
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.khoiron14.moviecatalogue.currentLocale
 import com.khoiron14.moviecatalogue.model.movie.Movie
 import com.khoiron14.moviecatalogue.service.RetrofitFactory
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +22,7 @@ class MovieViewModel : ViewModel() {
     fun setMovieList() {
         val service = RetrofitFactory.service()
         CoroutineScope(Dispatchers.IO).launch {
-            val response = service.getMovieList()
+            val response = service.getMovieList(currentLocale.toLanguageTag())
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {
