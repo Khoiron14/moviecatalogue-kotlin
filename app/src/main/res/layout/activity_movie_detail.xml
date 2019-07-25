@@ -27,14 +27,12 @@
 			android:id="@+id/img_poster"
 			android:layout_width="100dp"
 			android:layout_height="150dp"
-			android:layout_marginStart="8dp"
+			android:layout_marginStart="16dp"
 			android:layout_marginTop="126dp"
-			android:layout_marginEnd="8dp"
 			android:adjustViewBounds="true"
 			android:contentDescription="@string/poster_image"
 			android:scaleType="centerCrop"
 			android:src="@drawable/ic_launcher_background"
-			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="@+id/img_cover"
 			tools:srcCompat="@tools:sample/backgrounds/scenic" />
@@ -44,45 +42,43 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="16dp"
-			android:layout_marginTop="16dp"
 			android:layout_marginEnd="16dp"
-			android:maxLines="3"
-			android:textAlignment="center"
-			android:textColor="@color/colorPrimary"
+			android:layout_marginBottom="8dp"
+			android:maxLines="2"
+			android:textColor="@android:color/white"
 			android:textSize="24sp"
 			android:textStyle="bold"
+			app:layout_constraintBottom_toTopOf="@+id/rating_bar"
 			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/img_poster"
+			app:layout_constraintStart_toEndOf="@+id/img_poster"
 			tools:text="Movie Title" />
 
 		<RatingBar
 			android:id="@+id/rating_bar"
-			style="?android:attr/ratingBarStyleIndicator"
+			style="?android:attr/ratingBarStyleSmall"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="16dp"
-			android:layout_marginEnd="8dp"
+			android:layout_marginStart="16dp"
+			android:layout_marginBottom="8dp"
 			android:numStars="5"
 			android:stepSize=".5"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+			android:theme="@style/RatingBar"
+			app:layout_constraintBottom_toBottomOf="@+id/img_cover"
+			app:layout_constraintStart_toEndOf="@+id/img_poster" />
 
 		<TextView
 			android:id="@+id/tv_text_release"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="16dp"
+			android:layout_marginStart="16dp"
+			android:layout_marginTop="8dp"
 			android:text="@string/release"
 			android:textSize="18sp"
 			android:visibility="invisible"
 			app:layout_constraintEnd_toStartOf="@+id/tv_release"
-			app:layout_constraintHorizontal_bias="0.5"
 			app:layout_constraintHorizontal_chainStyle="packed"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
+			app:layout_constraintStart_toEndOf="@+id/img_poster"
+			app:layout_constraintTop_toBottomOf="@+id/img_cover" />
 
 		<TextView
 			android:id="@+id/tv_release"
@@ -93,30 +89,16 @@
 			android:textColor="@color/colorPrimary"
 			android:textSize="16sp"
 			app:layout_constraintBottom_toBottomOf="@+id/tv_text_release"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.5"
 			app:layout_constraintStart_toEndOf="@+id/tv_text_release"
 			app:layout_constraintTop_toTopOf="@+id/tv_text_release"
 			tools:text="2019" />
-
-		<TextView
-			android:id="@+id/tv_text_overview"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="16dp"
-			android:layout_marginTop="16dp"
-			android:text="@string/overview"
-			android:textSize="16sp"
-			android:visibility="invisible"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/tv_text_release" />
 
 		<TextView
 			android:id="@+id/tv_overview"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="16dp"
-			android:layout_marginTop="8dp"
+			android:layout_marginTop="16dp"
 			android:layout_marginEnd="16dp"
 			android:layout_marginBottom="16dp"
 			android:textColor="@android:color/black"
@@ -124,7 +106,7 @@
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/tv_text_overview"
+			app:layout_constraintTop_toBottomOf="@+id/img_poster"
 			tools:text="@tools:sample/lorem/random" />
 
 		<ProgressBar
@@ -132,12 +114,10 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerHorizontal="true"
-			android:layout_marginStart="8dp"
 			android:layout_marginTop="16dp"
-			android:layout_marginEnd="8dp"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="@+id/img_cover" />
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toTopOf="@+id/tv_overview" />
 
 	</android.support.constraint.ConstraintLayout>
 </ScrollView>

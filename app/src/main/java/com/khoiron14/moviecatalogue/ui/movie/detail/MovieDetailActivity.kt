@@ -27,7 +27,6 @@ class MovieDetailActivity : AppCompatActivity() {
                 loadMovieDetail(movie)
                 showLoading(false, progress_bar)
                 tv_text_release.visible()
-                tv_text_overview.visible()
             }
         }
 
@@ -92,7 +91,6 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun disconnected() {
         tv_text_release.gone()
-        tv_text_overview.gone()
         showLoading(false, progress_bar)
         contentView?.longSnackbar(R.string.no_connection)
     }

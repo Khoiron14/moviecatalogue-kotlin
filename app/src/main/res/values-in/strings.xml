@@ -5,7 +5,6 @@
 	<string name="movie">Film</string>
 	<string name="tv_show">Acara TV</string>
 	<string name="release">Rilis</string>
-	<string name="overview">Ikhtisar </string>
 	<string name="first_air">Tayang Pertama</string>
 	<string name="no_connection">Tidak ada koneksi</string>
 </resources>

@@ -27,7 +27,6 @@ class TvshowDetailActivity : AppCompatActivity() {
                 loadTvshowDetail(tvshow)
                 showLoading(false, progress_bar)
                 tv_text_first_air.visible()
-                tv_text_overview.visible()
             }
         }
 
@@ -92,7 +91,6 @@ class TvshowDetailActivity : AppCompatActivity() {
 
     private fun disconnected() {
         tv_text_first_air.gone()
-        tv_text_overview.gone()
         showLoading(false, progress_bar)
         contentView?.longSnackbar(R.string.no_connection)
     }
