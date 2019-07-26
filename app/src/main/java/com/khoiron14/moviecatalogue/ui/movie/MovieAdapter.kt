@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.BuildConfig
 import com.khoiron14.moviecatalogue.R
@@ -47,12 +48,14 @@ class MovieAdapter(private val listener: (Movie) -> Unit) :
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(movie: Movie) {
             itemView.tv_title.text = movie.title
-            itemView.tv_rating.text = movie.rating
             Glide.with(itemView)
                 .load(BuildConfig.BASE_IMAGE_PATH_URL + movie.posterPath)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(itemView.img_poster)
+            itemView.btn_favorite.setOnClickListener {
+                Toast.makeText(itemView.context, "Favorite", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

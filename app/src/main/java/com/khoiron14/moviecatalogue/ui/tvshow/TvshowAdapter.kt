@@ -47,7 +47,6 @@ class TvshowAdapter(private val listener: (Tvshow) -> Unit) :
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(tvshow: Tvshow) {
             itemView.tv_title.text = tvshow.name
-            itemView.tv_rating.text = tvshow.rating
             Glide.with(itemView)
                 .load(BuildConfig.BASE_IMAGE_PATH_URL + tvshow.posterPath)
                 .placeholder(R.drawable.ic_launcher_background)
