@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
  */
 data class Tvshow(
     val id: Int? = null,
-    val name: String? = null,
+    @field:Json(name = "original_name") val name: String? = null,
     @field:Json(name = "vote_average") val rating: String? = null,
     @field:Json(name = "first_air_date") var firstAirDate: String? = null,
     val overview: String? = null,

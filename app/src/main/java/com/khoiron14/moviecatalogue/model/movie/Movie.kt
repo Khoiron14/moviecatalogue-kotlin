@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
  */
 data class Movie(
     val id: Int? = null,
-    val title: String? = null,
+    @field:Json(name = "original_title") val title: String? = null,
     @field:Json(name = "vote_average") val rating: String? = null,
     @field:Json(name = "release_date") var releaseDate: String? = null,
     val overview: String? = null,
