@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.khoiron14.moviecatalogue.R
+import com.khoiron14.moviecatalogue.ui.favorite.FavoriteFragment
 import com.khoiron14.moviecatalogue.ui.movie.MovieFragment
 import com.khoiron14.moviecatalogue.ui.tvshow.TvshowFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,9 +22,15 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.navigation_movie -> {
                     loadMovieFragment()
+                    supportActionBar?.elevation = 4F
                 }
                 R.id.navigation_tvshow -> {
                     loadTvshowFragment()
+                    supportActionBar?.elevation = 4F
+                }
+                R.id.navigation_favorite -> {
+                    loadFavoriteFragment()
+                    supportActionBar?.elevation = 0F
                 }
             }
             true
@@ -58,6 +65,12 @@ class MainActivity : AppCompatActivity() {
     private fun loadTvshowFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, TvshowFragment(), TvshowFragment::class.java.simpleName)
+            .commit()
+    }
+
+    private fun loadFavoriteFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, FavoriteFragment(), FavoriteFragment::class.java.simpleName)
             .commit()
     }
 }

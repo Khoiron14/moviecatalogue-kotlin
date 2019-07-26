@@ -8,4 +8,6 @@
 	<string name="release">Release</string>
 	<string name="first_air">First Air</string>
 	<string name="no_connection">No connection</string>
+	<string name="favorite">Favorite</string>
+	<string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 </resources>
