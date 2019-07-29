@@ -88,15 +88,6 @@ class MovieDetailActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (connectionAvaiable(this)) {
-            connected()
-        } else {
-            disconnected()
-        }
-    }
-
     private fun fetchData() {
         viewModel = ViewModelProviders.of(this).get(MovieDetailViewModel::class.java)
         viewModel.getMovie().observe(this, getMovie)

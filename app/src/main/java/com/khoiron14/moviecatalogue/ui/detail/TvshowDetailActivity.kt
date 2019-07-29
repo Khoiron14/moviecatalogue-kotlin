@@ -87,15 +87,6 @@ class TvshowDetailActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (connectionAvaiable(this)) {
-            connected()
-        } else {
-            disconnected()
-        }
-    }
-
     private fun fetchData() {
         viewModel = ViewModelProviders.of(this).get(TvshowDetailViewModel::class.java)
         viewModel.getTvshow().observe(this, getTvshow)

@@ -57,15 +57,6 @@ class TvshowFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (connectionAvaiable(activity as Activity)) {
-            connected()
-        } else {
-            disconnected()
-        }
-    }
-
     private fun fetchData() {
         viewModel = ViewModelProviders.of(this).get(TvshowViewModel::class.java)
         viewModel.getTvshowList().observe(this, getTvshowList)
