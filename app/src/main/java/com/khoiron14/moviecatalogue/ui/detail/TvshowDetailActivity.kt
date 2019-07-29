@@ -67,9 +67,11 @@ class TvshowDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.add_to_favorite -> {
-                if (isFavorite) removeFromFavorite() else addToFavorite()
-                isFavorite = !isFavorite
-                setFavorite()
+                if (::mTvshow.isInitialized) {
+                    if (isFavorite) removeFromFavorite() else addToFavorite()
+                    isFavorite = !isFavorite
+                    setFavorite()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

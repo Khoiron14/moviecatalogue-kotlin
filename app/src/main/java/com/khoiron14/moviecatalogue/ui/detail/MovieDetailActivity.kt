@@ -68,9 +68,11 @@ class MovieDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.add_to_favorite -> {
-                if (isFavorite) removeFromFavorite() else addToFavorite()
-                isFavorite = !isFavorite
-                setFavorite()
+                if (::mMovie.isInitialized) {
+                    if (isFavorite) removeFromFavorite() else addToFavorite()
+                    isFavorite = !isFavorite
+                    setFavorite()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
