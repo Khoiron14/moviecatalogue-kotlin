@@ -1,4 +1,4 @@
-package com.khoiron14.moviecatalogue.ui.tvshow
+package com.khoiron14.moviecatalogue.ui.favorite.tvshow
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,23 +8,17 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.BuildConfig
 import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.database.database
 import com.khoiron14.moviecatalogue.model.favorite.TvshowFavorite
-import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
-import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.item_movie.view.*
-import org.jetbrains.anko.db.classParser
-import org.jetbrains.anko.db.select
 
 /**
- * Created by khoiron14 on 7/3/2019.
+ * Created by khoiron14 on 7/28/2019.
  */
-class TvshowAdapter(private val listener: (Tvshow) -> Unit) :
-    RecyclerView.Adapter<TvshowAdapter.ViewHolder>() {
+class TvshowFavoriteAdapter(private val listener: (TvshowFavorite) -> Unit) :
+    RecyclerView.Adapter<TvshowFavoriteAdapter.ViewHolder>() {
+    private var tvshows: List<TvshowFavorite> = listOf()
 
-    private var tvshows: List<Tvshow> = listOf()
-
-    fun setData(items: List<Tvshow>) {
+    fun setData(items: List<TvshowFavorite>) {
         tvshows = items
         notifyDataSetChanged()
     }
@@ -37,7 +31,7 @@ class TvshowAdapter(private val listener: (Tvshow) -> Unit) :
             val position = result.adapterPosition
 
             if (position != RecyclerView.NO_POSITION) {
-                val tvshow: Tvshow = tvshows[position]
+                val tvshow: TvshowFavorite = tvshows[position]
                 listener(tvshow)
             }
         }
@@ -51,21 +45,13 @@ class TvshowAdapter(private val listener: (Tvshow) -> Unit) :
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(tvshow: Tvshow) {
-            itemView.tv_title.text = tvshow.name
+        fun bind(tvshow: TvshowFavorite) {
+            itemView.tv_title.text = tvshow.tvshowName
             Glide.with(itemView)
-                .load(BuildConfig.BASE_IMAGE_PATH_URL + tvshow.posterPath)
+                .load(BuildConfig.BASE_IMAGE_PATH_URL + tvshow.tvshowPosterPath)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(itemView.img_poster)
-            itemView.context.database.use {
-                val result = select(TvshowFavorite.TABLE_TVSHOW_FAVORITE)
-                    .whereArgs("(TVSHOW_ID = {id})", "id" to tvshow.id!!)
-                val tvshowFav = result.parseList(classParser<TvshowFavorite>())
-                if (tvshowFav.isNotEmpty()) {
-                    itemView.favorite.visible()
-                }
-            }
         }
     }
 }

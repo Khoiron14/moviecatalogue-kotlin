@@ -8,4 +8,6 @@
 	<string name="first_air">Tayang Pertama</string>
 	<string name="no_connection">Tidak ada koneksi</string>
 	<string name="favorite">Favorit</string>
+	<string name="favorite_added">Favorit ditambahkan</string>
+	<string name="favorite_removed">Favorit dihapus</string>
 </resources>

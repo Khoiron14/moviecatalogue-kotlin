@@ -1,4 +1,4 @@
-package com.khoiron14.moviecatalogue.ui.movie
+package com.khoiron14.moviecatalogue.ui.favorite.movie
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,23 +8,17 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.BuildConfig
 import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.database.database
 import com.khoiron14.moviecatalogue.model.favorite.MovieFavorite
-import com.khoiron14.moviecatalogue.model.movie.Movie
-import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.item_movie.view.*
-import org.jetbrains.anko.db.classParser
-import org.jetbrains.anko.db.select
 
 /**
- * Created by khoiron14 on 7/3/2019.
+ * Created by khoiron14 on 7/28/2019.
  */
-class MovieAdapter(private val listener: (Movie) -> Unit) :
-    RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+class MovieFavoriteAdapter(private val listener: (MovieFavorite) -> Unit) :
+    RecyclerView.Adapter<MovieFavoriteAdapter.ViewHolder>() {
+    private var movies: List<MovieFavorite> = listOf()
 
-    private var movies: List<Movie> = listOf()
-
-    fun setData(items: List<Movie>) {
+    fun setData(items: List<MovieFavorite>) {
         movies = items
         notifyDataSetChanged()
     }
@@ -37,7 +31,7 @@ class MovieAdapter(private val listener: (Movie) -> Unit) :
             val position = result.adapterPosition
 
             if (position != RecyclerView.NO_POSITION) {
-                val movie: Movie = movies[position]
+                val movie: MovieFavorite = movies[position]
                 listener(movie)
             }
         }
@@ -51,21 +45,13 @@ class MovieAdapter(private val listener: (Movie) -> Unit) :
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(movie: Movie) {
-            itemView.tv_title.text = movie.title
+        fun bind(movie: MovieFavorite) {
+            itemView.tv_title.text = movie.movieTitle
             Glide.with(itemView)
-                .load(BuildConfig.BASE_IMAGE_PATH_URL + movie.posterPath)
+                .load(BuildConfig.BASE_IMAGE_PATH_URL + movie.moviePosterPath)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(itemView.img_poster)
-            itemView.context.database.use {
-                val result = select(MovieFavorite.TABLE_MOVIE_FAVORITE)
-                    .whereArgs("(MOVIE_ID = {id})", "id" to movie.id!!)
-                val movieFav = result.parseList(classParser<MovieFavorite>())
-                if (movieFav.isNotEmpty()) {
-                    itemView.favorite.visible()
-                }
-            }
         }
     }
 }

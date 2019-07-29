@@ -7,6 +7,7 @@ import android.net.ConnectivityManager
 import android.support.v4.os.ConfigurationCompat
 import android.view.View
 import android.widget.ProgressBar
+
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -14,6 +15,10 @@ import java.util.*
 /**
  * Created by khoiron14 on 7/20/2019.
  */
+
+// get current locale
+val currentLocale: Locale = ConfigurationCompat.getLocales(Resources.getSystem().configuration)[0]
+
 fun View.visible() {
     visibility = View.VISIBLE
 }
@@ -22,6 +27,7 @@ fun View.gone() {
     visibility = View.GONE
 }
 
+// convert string date to "MMMM yyyy" format, e.g. January 2019
 fun convertDate(date: String?): String? {
     val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     format.timeZone = TimeZone.getTimeZone("UTC")
@@ -31,12 +37,14 @@ fun convertDate(date: String?): String? {
     return formatDate.format(dateConvert)
 }
 
+// check device connection
 fun connectionAvaiable(activity: Activity): Boolean {
     val manager: ConnectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkInfo = manager.activeNetworkInfo
     return networkInfo != null && networkInfo.isConnected
 }
 
+// show and hide progress bar loading
 fun showLoading(state: Boolean, progressBar: ProgressBar) {
     if (state) {
         progressBar.visible()
@@ -44,5 +52,3 @@ fun showLoading(state: Boolean, progressBar: ProgressBar) {
         progressBar.gone()
     }
 }
-
-val currentLocale: Locale = ConfigurationCompat.getLocales(Resources.getSystem().configuration)[0]

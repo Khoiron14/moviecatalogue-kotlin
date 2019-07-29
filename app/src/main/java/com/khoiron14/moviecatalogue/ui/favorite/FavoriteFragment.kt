@@ -8,7 +8,10 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import com.khoiron14.moviecatalogue.R
+import com.khoiron14.moviecatalogue.ui.favorite.movie.MovieFavoriteFragment
+import com.khoiron14.moviecatalogue.ui.favorite.tvshow.TvshowFavoriteFragment
 import kotlinx.android.synthetic.main.fragment_favorite.*
 
 /**

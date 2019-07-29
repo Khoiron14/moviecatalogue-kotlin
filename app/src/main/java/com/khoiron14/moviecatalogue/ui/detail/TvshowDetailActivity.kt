@@ -2,16 +2,28 @@ package com.khoiron14.moviecatalogue.ui.detail
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
+
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.*
+import com.khoiron14.moviecatalogue.database.database
+import com.khoiron14.moviecatalogue.model.favorite.TvshowFavorite
 import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
 import kotlinx.android.synthetic.main.activity_tvshow_detail.*
 import org.jetbrains.anko.contentView
+import org.jetbrains.anko.db.classParser
+import org.jetbrains.anko.db.delete
+import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.db.select
 import org.jetbrains.anko.design.longSnackbar
+import org.jetbrains.anko.design.snackbar
 
 class TvshowDetailActivity : AppCompatActivity() {
 
@@ -20,10 +32,15 @@ class TvshowDetailActivity : AppCompatActivity() {
     }
 
     private lateinit var viewModel: TvshowDetailViewModel
+    private lateinit var mTvshow: Tvshow
+    private var id: Int = 0
+    private var menuItem: Menu? = null
+    private var isFavorite: Boolean = false
 
     private val getTvshow =
         Observer<Tvshow> { tvshow ->
             if (tvshow != null) {
+                mTvshow = tvshow
                 loadTvshowDetail(tvshow)
                 showLoading(false, progress_bar)
                 tv_text_first_air.visible()
@@ -34,8 +51,29 @@ class TvshowDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tvshow_detail)
 
+        id = intent.getIntExtra(EXTRA_TVSHOW, 0)
+
         supportActionBar?.title = ""
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.detail_menu, menu)
+        menuItem = menu
+        setFavorite()
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.add_to_favorite -> {
+                if (isFavorite) removeFromFavorite() else addToFavorite()
+                isFavorite = !isFavorite
+                setFavorite()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onStart() {
@@ -60,6 +98,7 @@ class TvshowDetailActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(TvshowDetailViewModel::class.java)
         viewModel.getTvshow().observe(this, getTvshow)
         viewModel.setTvshow(intent.getIntExtra(EXTRA_TVSHOW, 0))
+        favoriteState()
     }
 
     private fun loadTvshowDetail(tvshow: Tvshow) {
@@ -93,5 +132,48 @@ class TvshowDetailActivity : AppCompatActivity() {
         tv_text_first_air.gone()
         showLoading(false, progress_bar)
         contentView?.longSnackbar(R.string.no_connection)
+    }
+
+    private fun addToFavorite() {
+        try {
+            database.use {
+                insert(
+                    TvshowFavorite.TABLE_TVSHOW_FAVORITE,
+                    TvshowFavorite.TVSHOW_ID to mTvshow.id,
+                    TvshowFavorite.TVSHOW_NAME to mTvshow.name,
+                    TvshowFavorite.TVSHOW_POSTER_PATH to mTvshow.posterPath
+                )
+            }
+            contentView?.snackbar(getString(R.string.favorite_added))?.show()
+        } catch (e: SQLiteConstraintException) {
+            contentView?.snackbar(e.localizedMessage)?.show()
+        }
+    }
+
+    private fun removeFromFavorite() {
+        try {
+            database.use {
+                delete(TvshowFavorite.TABLE_TVSHOW_FAVORITE, "(TVSHOW_ID = {id})", "id" to id)
+            }
+            contentView?.snackbar(getString(R.string.favorite_removed))?.show()
+        } catch (e: SQLiteConstraintException) {
+            contentView?.snackbar(e.localizedMessage)?.show()
+        }
+    }
+
+    private fun setFavorite() {
+        if (isFavorite)
+            menuItem?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_added_to_favorite)
+        else
+            menuItem?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_add_to_favorite)
+    }
+
+    private fun favoriteState() {
+        database.use {
+            val result = select(TvshowFavorite.TABLE_TVSHOW_FAVORITE)
+                .whereArgs("(TVSHOW_ID = {id})", "id" to id)
+            val tvshowFav = result.parseList(classParser<TvshowFavorite>())
+            if (tvshowFav.isNotEmpty()) isFavorite = true
+        }
     }
 }
