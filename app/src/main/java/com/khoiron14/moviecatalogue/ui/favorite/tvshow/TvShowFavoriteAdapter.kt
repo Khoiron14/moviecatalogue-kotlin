@@ -8,18 +8,18 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.BuildConfig
 import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.model.favorite.TvshowFavorite
+import com.khoiron14.moviecatalogue.model.favorite.TvShowFavorite
 import kotlinx.android.synthetic.main.item_movie.view.*
 
 /**
  * Created by khoiron14 on 7/28/2019.
  */
-class TvshowFavoriteAdapter(private val listener: (TvshowFavorite) -> Unit) :
-    RecyclerView.Adapter<TvshowFavoriteAdapter.ViewHolder>() {
-    private var tvshows: List<TvshowFavorite> = listOf()
+class TvShowFavoriteAdapter(private val listener: (TvShowFavorite) -> Unit) :
+    RecyclerView.Adapter<TvShowFavoriteAdapter.ViewHolder>() {
+    private var tvShows: List<TvShowFavorite> = listOf()
 
-    fun setData(items: List<TvshowFavorite>) {
-        tvshows = items
+    fun setData(items: List<TvShowFavorite>) {
+        tvShows = items
         notifyDataSetChanged()
     }
 
@@ -31,24 +31,24 @@ class TvshowFavoriteAdapter(private val listener: (TvshowFavorite) -> Unit) :
             val position = result.adapterPosition
 
             if (position != RecyclerView.NO_POSITION) {
-                val tvshow: TvshowFavorite = tvshows[position]
-                listener(tvshow)
+                val tvShow: TvShowFavorite = tvShows[position]
+                listener(tvShow)
             }
         }
         return result
     }
 
-    override fun getItemCount(): Int = tvshows.size
+    override fun getItemCount(): Int = tvShows.size
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        p0.bind(tvshows[p1])
+        p0.bind(tvShows[p1])
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(tvshow: TvshowFavorite) {
-            itemView.tv_title.text = tvshow.tvshowName
+        fun bind(tvShow: TvShowFavorite) {
+            itemView.tv_title.text = tvShow.tvShowName
             Glide.with(itemView)
-                .load(BuildConfig.BASE_IMAGE_PATH_URL + tvshow.tvshowPosterPath)
+                .load(BuildConfig.BASE_IMAGE_PATH_URL + tvShow.tvShowPosterPath)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(itemView.img_poster)

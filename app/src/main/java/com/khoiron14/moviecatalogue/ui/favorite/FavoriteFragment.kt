@@ -11,7 +11,7 @@ import android.view.ViewGroup
 
 import com.khoiron14.moviecatalogue.R
 import com.khoiron14.moviecatalogue.ui.favorite.movie.MovieFavoriteFragment
-import com.khoiron14.moviecatalogue.ui.favorite.tvshow.TvshowFavoriteFragment
+import com.khoiron14.moviecatalogue.ui.favorite.tvshow.TvShowFavoriteFragment
 import kotlinx.android.synthetic.main.fragment_favorite.*
 
 /**
@@ -44,7 +44,7 @@ class FavoriteFragment : Fragment() {
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = FavoritePagerAdapter(childFragmentManager)
         adapter.addFragment(MovieFavoriteFragment(), getString(R.string.movie))
-        adapter.addFragment(TvshowFavoriteFragment(), getString(R.string.tv_show))
+        adapter.addFragment(TvShowFavoriteFragment(), getString(R.string.tv_show))
         viewPager.adapter = adapter
     }
 }

@@ -3,11 +3,11 @@ package com.khoiron14.moviecatalogue.model.favorite
 /**
  * Created by khoiron14 on 7/28/2019.
  */
-data class TvshowFavorite(
+data class TvShowFavorite(
     val id: Long?,
-    val tvshowId: Int?,
-    val tvshowName: String?,
-    val tvshowPosterPath: String?
+    val tvShowId: Int?,
+    val tvShowName: String?,
+    val tvShowPosterPath: String?
 ) {
     companion object {
         const val TABLE_TVSHOW_FAVORITE: String = "TABLE_TVSHOW_FAVORITE"

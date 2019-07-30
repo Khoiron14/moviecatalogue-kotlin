@@ -3,7 +3,7 @@ package com.khoiron14.moviecatalogue.database
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.khoiron14.moviecatalogue.model.favorite.MovieFavorite
-import com.khoiron14.moviecatalogue.model.favorite.TvshowFavorite
+import com.khoiron14.moviecatalogue.model.favorite.TvShowFavorite
 import org.jetbrains.anko.db.*
 
 /**
@@ -33,17 +33,17 @@ class MyDatabaseOpenHelper(context: Context) : ManagedSQLiteOpenHelper(context, 
         )
 
         p0?.createTable(
-            TvshowFavorite.TABLE_TVSHOW_FAVORITE, true,
-            TvshowFavorite.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
-            TvshowFavorite.TVSHOW_ID to INTEGER + UNIQUE,
-            TvshowFavorite.TVSHOW_NAME to TEXT,
-            TvshowFavorite.TVSHOW_POSTER_PATH to TEXT
+            TvShowFavorite.TABLE_TVSHOW_FAVORITE, true,
+            TvShowFavorite.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+            TvShowFavorite.TVSHOW_ID to INTEGER + UNIQUE,
+            TvShowFavorite.TVSHOW_NAME to TEXT,
+            TvShowFavorite.TVSHOW_POSTER_PATH to TEXT
         )
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         p0?.dropTable(MovieFavorite.TABLE_MOVIE_FAVORITE, true)
-        p0?.dropTable(TvshowFavorite.TABLE_TVSHOW_FAVORITE, true)
+        p0?.dropTable(TvShowFavorite.TABLE_TVSHOW_FAVORITE, true)
     }
 }
 

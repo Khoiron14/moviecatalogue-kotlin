@@ -9,8 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.khoiron14.moviecatalogue.*
-import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
-import com.khoiron14.moviecatalogue.ui.detail.TvshowDetailActivity
+import com.khoiron14.moviecatalogue.model.tvshow.TvShow
+import com.khoiron14.moviecatalogue.ui.detail.TvShowDetailActivity
 import kotlinx.android.synthetic.main.fragment_tvshow.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -18,15 +18,15 @@ import org.jetbrains.anko.support.v4.startActivity
  * A simple [Fragment] subclass.
  *
  */
-class TvshowFragment : Fragment() {
+class TvShowFragment : Fragment() {
 
-    private lateinit var adapter: TvshowAdapter
-    private lateinit var viewModel: TvshowViewModel
+    private lateinit var adapter: TvShowAdapter
+    private lateinit var viewModel: TvShowViewModel
 
-    private val getTvshowList =
-        Observer<List<Tvshow>> { tvshowList ->
-            if (tvshowList != null) {
-                adapter.setData(tvshowList)
+    private val getTvShowList =
+        Observer<List<TvShow>> { tvShowList ->
+            if (tvShowList != null) {
+                adapter.setData(tvShowList)
                 showLoading(false, progress_bar)
             }
         }
@@ -42,8 +42,8 @@ class TvshowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TvshowAdapter {
-            startActivity<TvshowDetailActivity>(TvshowDetailActivity.EXTRA_TVSHOW to it.id)
+        adapter = TvShowAdapter {
+            startActivity<TvShowDetailActivity>(TvShowDetailActivity.EXTRA_TVSHOW to it.id)
         }
         rv_list_tvshow.adapter = adapter
     }
@@ -58,9 +58,9 @@ class TvshowFragment : Fragment() {
     }
 
     private fun fetchData() {
-        viewModel = ViewModelProviders.of(this).get(TvshowViewModel::class.java)
-        viewModel.getTvshowList().observe(this, getTvshowList)
-        viewModel.setTvshowList()
+        viewModel = ViewModelProviders.of(this).get(TvShowViewModel::class.java)
+        viewModel.getTvShowList().observe(this, getTvShowList)
+        viewModel.setTvShowList()
     }
 
     private fun connected() {

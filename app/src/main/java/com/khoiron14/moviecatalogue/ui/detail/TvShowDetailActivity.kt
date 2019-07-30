@@ -14,8 +14,8 @@ import android.view.MenuItem
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.database.database
-import com.khoiron14.moviecatalogue.model.favorite.TvshowFavorite
-import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
+import com.khoiron14.moviecatalogue.model.favorite.TvShowFavorite
+import com.khoiron14.moviecatalogue.model.tvshow.TvShow
 import kotlinx.android.synthetic.main.activity_tvshow_detail.*
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.db.classParser
@@ -25,23 +25,23 @@ import org.jetbrains.anko.db.select
 import org.jetbrains.anko.design.longSnackbar
 import org.jetbrains.anko.design.snackbar
 
-class TvshowDetailActivity : AppCompatActivity() {
+class TvShowDetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_TVSHOW = "extra_tvshow"
     }
 
-    private lateinit var viewModel: TvshowDetailViewModel
-    private lateinit var mTvshow: Tvshow
+    private lateinit var viewModel: TvShowDetailViewModel
+    private lateinit var mTvShow: TvShow
     private var id: Int = 0
     private var menuItem: Menu? = null
     private var isFavorite: Boolean = false
 
-    private val getTvshow =
-        Observer<Tvshow> { tvshow ->
-            if (tvshow != null) {
-                mTvshow = tvshow
-                loadTvshowDetail(tvshow)
+    private val getTvShow =
+        Observer<TvShow> { tvShow ->
+            if (tvShow != null) {
+                mTvShow = tvShow
+                loadTvShowDetail(tvShow)
                 showLoading(false, progress_bar)
                 tv_text_first_air.visible()
             }
@@ -67,7 +67,7 @@ class TvshowDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.add_to_favorite -> {
-                if (::mTvshow.isInitialized) {
+                if (::mTvShow.isInitialized) {
                     if (isFavorite) removeFromFavorite() else addToFavorite()
                     isFavorite = !isFavorite
                     setFavorite()
@@ -88,30 +88,30 @@ class TvshowDetailActivity : AppCompatActivity() {
     }
 
     private fun fetchData() {
-        viewModel = ViewModelProviders.of(this).get(TvshowDetailViewModel::class.java)
-        viewModel.getTvshow().observe(this, getTvshow)
-        viewModel.setTvshow(intent.getIntExtra(EXTRA_TVSHOW, 0))
+        viewModel = ViewModelProviders.of(this).get(TvShowDetailViewModel::class.java)
+        viewModel.getTvShow().observe(this, getTvShow)
+        viewModel.setTvShow(intent.getIntExtra(EXTRA_TVSHOW, 0))
         favoriteState()
     }
 
-    private fun loadTvshowDetail(tvshow: Tvshow) {
-        tv_name.text = tvshow.name
-        rating_bar.rating = tvshow.rating!!.toFloat() / 2
-        tv_first_air.text = convertDate(tvshow.firstAirDate)
-        tv_overview.text = tvshow.overview
-        if (tvshow.backdropPath != null) {
-            Glide.with(this@TvshowDetailActivity)
-                .load(BuildConfig.BASE_IMAGE_PATH_URL + tvshow.backdropPath)
+    private fun loadTvShowDetail(tvShow: TvShow) {
+        tv_name.text = tvShow.name
+        rating_bar.rating = tvShow.rating!!.toFloat() / 2
+        tv_first_air.text = convertDate(tvShow.firstAirDate)
+        tv_overview.text = tvShow.overview
+        if (tvShow.backdropPath != null) {
+            Glide.with(this@TvShowDetailActivity)
+                .load(BuildConfig.BASE_IMAGE_PATH_URL + tvShow.backdropPath)
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(img_cover)
         } else {
-            Glide.with(this@TvshowDetailActivity)
-                .load(BuildConfig.BASE_IMAGE_PATH_URL + tvshow.posterPath)
+            Glide.with(this@TvShowDetailActivity)
+                .load(BuildConfig.BASE_IMAGE_PATH_URL + tvShow.posterPath)
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(img_cover)
         }
-        Glide.with(this@TvshowDetailActivity)
-            .load(BuildConfig.BASE_IMAGE_PATH_URL + tvshow.posterPath)
+        Glide.with(this@TvShowDetailActivity)
+            .load(BuildConfig.BASE_IMAGE_PATH_URL + tvShow.posterPath)
             .placeholder(R.drawable.ic_launcher_background)
             .into(img_poster)
     }
@@ -131,10 +131,10 @@ class TvshowDetailActivity : AppCompatActivity() {
         try {
             database.use {
                 insert(
-                    TvshowFavorite.TABLE_TVSHOW_FAVORITE,
-                    TvshowFavorite.TVSHOW_ID to mTvshow.id,
-                    TvshowFavorite.TVSHOW_NAME to mTvshow.name,
-                    TvshowFavorite.TVSHOW_POSTER_PATH to mTvshow.posterPath
+                    TvShowFavorite.TABLE_TVSHOW_FAVORITE,
+                    TvShowFavorite.TVSHOW_ID to mTvShow.id,
+                    TvShowFavorite.TVSHOW_NAME to mTvShow.name,
+                    TvShowFavorite.TVSHOW_POSTER_PATH to mTvShow.posterPath
                 )
             }
             contentView?.snackbar(getString(R.string.favorite_added))?.show()
@@ -146,7 +146,7 @@ class TvshowDetailActivity : AppCompatActivity() {
     private fun removeFromFavorite() {
         try {
             database.use {
-                delete(TvshowFavorite.TABLE_TVSHOW_FAVORITE, "(TVSHOW_ID = {id})", "id" to id)
+                delete(TvShowFavorite.TABLE_TVSHOW_FAVORITE, "(TVSHOW_ID = {id})", "id" to id)
             }
             contentView?.snackbar(getString(R.string.favorite_removed))?.show()
         } catch (e: SQLiteConstraintException) {
@@ -163,10 +163,10 @@ class TvshowDetailActivity : AppCompatActivity() {
 
     private fun favoriteState() {
         database.use {
-            val result = select(TvshowFavorite.TABLE_TVSHOW_FAVORITE)
+            val result = select(TvShowFavorite.TABLE_TVSHOW_FAVORITE)
                 .whereArgs("(TVSHOW_ID = {id})", "id" to id)
-            val tvshowFav = result.parseList(classParser<TvshowFavorite>())
-            if (tvshowFav.isNotEmpty()) isFavorite = true
+            val tvShowFav = result.parseList(classParser<TvShowFavorite>())
+            if (tvShowFav.isNotEmpty()) isFavorite = true
         }
     }
 }

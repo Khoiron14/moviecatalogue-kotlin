@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import com.khoiron14.moviecatalogue.R
 import com.khoiron14.moviecatalogue.database.database
 import com.khoiron14.moviecatalogue.gone
-import com.khoiron14.moviecatalogue.model.favorite.TvshowFavorite
-import com.khoiron14.moviecatalogue.ui.detail.TvshowDetailActivity
+import com.khoiron14.moviecatalogue.model.favorite.TvShowFavorite
+import com.khoiron14.moviecatalogue.ui.detail.TvShowDetailActivity
 import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.fragment_tvshow_favorite.*
 import org.jetbrains.anko.db.classParser
@@ -22,15 +22,15 @@ import org.jetbrains.anko.support.v4.startActivity
  * A simple [Fragment] subclass.
  *
  */
-class TvshowFavoriteFragment : Fragment() {
+class TvShowFavoriteFragment : Fragment() {
 
-    private lateinit var adapter: TvshowFavoriteAdapter
+    private lateinit var adapter: TvShowFavoriteAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        adapter = TvshowFavoriteAdapter {
-            startActivity<TvshowDetailActivity>(TvshowDetailActivity.EXTRA_TVSHOW to it.tvshowId)
+        adapter = TvShowFavoriteAdapter {
+            startActivity<TvShowDetailActivity>(TvShowDetailActivity.EXTRA_TVSHOW to it.tvShowId)
         }
         rv_list_tvshow.adapter = adapter
 
@@ -51,16 +51,16 @@ class TvshowFavoriteFragment : Fragment() {
     }
 
     private fun showFavorite() {
-        var tvshowList: List<TvshowFavorite> = listOf()
+        var tvShowList: List<TvShowFavorite> = listOf()
 
         context?.database?.use {
-            val result = select(TvshowFavorite.TABLE_TVSHOW_FAVORITE)
-            tvshowList = result.parseList(classParser())
-            adapter.setData(tvshowList)
+            val result = select(TvShowFavorite.TABLE_TVSHOW_FAVORITE)
+            tvShowList = result.parseList(classParser())
+            adapter.setData(tvShowList)
         }
 
-        if (tvshowList.isNotEmpty()) {
-            adapter.setData(tvshowList)
+        if (tvShowList.isNotEmpty()) {
+            adapter.setData(tvShowList)
             rv_list_tvshow.visible()
             no_favorite.gone()
         } else {

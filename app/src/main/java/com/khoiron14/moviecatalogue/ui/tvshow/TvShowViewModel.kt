@@ -1,10 +1,10 @@
-package com.khoiron14.moviecatalogue.ui.detail
+package com.khoiron14.moviecatalogue.ui.tvshow
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.khoiron14.moviecatalogue.currentLocale
-import com.khoiron14.moviecatalogue.model.tvshow.Tvshow
+import com.khoiron14.moviecatalogue.model.tvshow.TvShow
 import com.khoiron14.moviecatalogue.service.RetrofitFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,18 +15,18 @@ import retrofit2.HttpException
 /**
  * Created by khoiron14 on 7/23/2019.
  */
-class TvshowDetailViewModel : ViewModel() {
+class TvShowViewModel : ViewModel() {
 
-    private val tvshow = MutableLiveData<Tvshow>()
+    private val tvShowResponse = MutableLiveData<List<TvShow>>()
 
-    fun setTvshow(id: Int) {
+    fun setTvShowList() {
         val service = RetrofitFactory.service()
         CoroutineScope(Dispatchers.IO).launch {
-            val response = service.getTvshow(id, currentLocale.toLanguageTag())
+            val response = service.getTvShowList(currentLocale.toLanguageTag())
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {
-                        response.body()?.let { tvshow.postValue(it) }
+                        response.body()?.let { tvShowResponse.postValue(it.results) }
                     } else {
                         error("Error ${response.code()}")
                     }
@@ -39,5 +39,5 @@ class TvshowDetailViewModel : ViewModel() {
         }
     }
 
-    fun getTvshow(): LiveData<Tvshow> = tvshow
+    fun getTvShowList(): LiveData<List<TvShow>> = tvShowResponse
 }
