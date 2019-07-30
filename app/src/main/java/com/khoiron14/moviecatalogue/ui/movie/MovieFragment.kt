@@ -57,6 +57,15 @@ class MovieFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        if (connectionAvaiable(activity as Activity)) {
+            connected()
+        } else {
+            disconnected()
+        }
+    }
+
     private fun fetchData() {
         viewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
         viewModel.getMovieList().observe(this, getMovieList)
