@@ -1,20 +1,78 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+	<!-- Base application theme. -->
+	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+		<!-- Customize your theme here. -->
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+	</style>
 
-    <style name="AppTheme.TransparentActionBar" parent="AppTheme">
-        <item name="windowActionBarOverlay">true</item>
-    </style>
+	<style name="AppTheme.TransparentActionBar" parent="AppTheme">
+		<item name="windowActionBarOverlay">true</item>
+	</style>
 
-    <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@android:color/white</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-    </style>
+	<style name="RatingBarStyle" parent="Theme.AppCompat">
+		<item name="colorControlNormal">@android:color/white</item>
+		<item name="colorControlActivated">@color/colorAccent</item>
+	</style>
 
+	<style name="ProgressBarStyle" parent="Theme.AppCompat">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginTop">@dimen/margin</item>
+		<item name="android:layout_centerHorizontal">true</item>
+	</style>
+
+	<style name="TextStyle" parent="@style/TextAppearance.AppCompat">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">16sp</item>
+	</style>
+
+	<style name="TextStyle.Title">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginStart">@dimen/margin</item>
+		<item name="android:layout_marginEnd">@dimen/margin</item>
+		<item name="android:layout_marginBottom">@dimen/margin_small</item>
+		<item name="android:maxLines">2</item>
+		<item name="android:textColor">@android:color/white</item>
+		<item name="android:textSize">24sp</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
+	<style name="TextStyle.Field">
+		<item name="android:visibility">invisible</item>
+	</style>
+
+	<style name="TextStyle.Value">
+		<item name="android:textColor">@color/colorPrimary</item>
+	</style>
+
+	<style name="TextStyle.Content">
+		<item name="android:textColor">@android:color/black</item>
+		<item name="android:layout_marginStart">@dimen/margin</item>
+		<item name="android:layout_marginTop">@dimen/margin</item>
+		<item name="android:layout_marginEnd">@dimen/margin</item>
+		<item name="android:layout_marginBottom">@dimen/margin</item>
+	</style>
+
+	<style name="TextStyle.Information">
+		<item name="android:textColor">@android:color/secondary_text_dark</item>
+		<item name="android:layout_centerInParent">true</item>
+	</style>
+
+	<style name="TextStyle.Information.NoConnection">
+		<item name="android:drawableStart">@drawable/ic_signal_wifi_off</item>
+		<item name="android:drawablePadding">@dimen/padding_small</item>
+		<item name="android:text">@string/no_connection</item>
+	</style>
+
+	<style name="RecyclerViewStyle">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="layoutManager">android.support.v7.widget.GridLayoutManager</item>
+		<item name="spanCount">3</item>
+	</style>
 </resources>
