@@ -9,8 +9,10 @@ import android.view.ViewGroup
 
 import com.khoiron14.moviecatalogue.R
 import com.khoiron14.moviecatalogue.database.database
+import com.khoiron14.moviecatalogue.gone
 import com.khoiron14.moviecatalogue.model.favorite.TvshowFavorite
 import com.khoiron14.moviecatalogue.ui.detail.TvshowDetailActivity
+import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.fragment_tvshow_favorite.*
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.select
@@ -49,10 +51,21 @@ class TvshowFavoriteFragment : Fragment() {
     }
 
     private fun showFavorite() {
+        var tvshowList: List<TvshowFavorite> = listOf()
+
         context?.database?.use {
             val result = select(TvshowFavorite.TABLE_TVSHOW_FAVORITE)
-            val tvshowList = result.parseList(classParser<TvshowFavorite>())
+            tvshowList = result.parseList(classParser())
             adapter.setData(tvshowList)
+        }
+
+        if (tvshowList.isNotEmpty()) {
+            adapter.setData(tvshowList)
+            rv_list_tvshow.visible()
+            no_favorite.gone()
+        } else {
+            rv_list_tvshow.gone()
+            no_favorite.visible()
         }
     }
 }
