@@ -25,4 +25,10 @@ interface RetrofitService {
 
     @GET("tv/{id}?api_key=${BuildConfig.API_KEY}")
     suspend fun getTvShow(@Path("id") id: Int, @Query("language") language: String = "en-US"): Response<TvShow>
+
+    @GET("search/movie?api_key=${BuildConfig.API_KEY}")
+    suspend fun getMovieSearchList(@Query("language") language: String = "en-US", @Query("query") query: String): Response<MovieResponse>
+
+    @GET("search/tv?api_key=${BuildConfig.API_KEY}")
+    suspend fun getTvShowSearchList(@Query("language") language: String = "en-US", @Query("query") query: String): Response<TvShowResponse>
 }

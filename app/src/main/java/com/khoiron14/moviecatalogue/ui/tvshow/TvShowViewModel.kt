@@ -19,10 +19,16 @@ class TvShowViewModel : ViewModel() {
 
     private val tvShowResponse = MutableLiveData<List<TvShow>>()
 
-    fun setTvShowList() {
+    fun setTvShowList(query: String? = null) {
         val service = RetrofitFactory.service()
         CoroutineScope(Dispatchers.IO).launch {
-            val response = service.getTvShowList(currentLocale.toLanguageTag())
+
+            val response = if (query == null) {
+                service.getTvShowList(currentLocale.toLanguageTag())
+            } else {
+                service.getTvShowSearchList(currentLocale.toLanguageTag(), query)
+            }
+
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {

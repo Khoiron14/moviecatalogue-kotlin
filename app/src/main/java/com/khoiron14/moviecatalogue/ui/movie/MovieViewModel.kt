@@ -5,12 +5,14 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.khoiron14.moviecatalogue.currentLocale
 import com.khoiron14.moviecatalogue.model.movie.Movie
+import com.khoiron14.moviecatalogue.model.movie.MovieResponse
 import com.khoiron14.moviecatalogue.service.RetrofitFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import retrofit2.Response
 
 /**
  * Created by khoiron14 on 7/23/2019.
@@ -19,10 +21,16 @@ class MovieViewModel : ViewModel() {
 
     private val movieList = MutableLiveData<List<Movie>>()
 
-    fun setMovieList() {
+    fun setMovieList(query: String? = null) {
         val service = RetrofitFactory.service()
         CoroutineScope(Dispatchers.IO).launch {
-            val response = service.getMovieList(currentLocale.toLanguageTag())
+
+            val response = if (query == null) {
+                service.getMovieList(currentLocale.toLanguageTag())
+            } else {
+                service.getMovieSearchList(currentLocale.toLanguageTag(), query)
+            }
+
             withContext(Dispatchers.Main) {
                 try {
                     if (response.isSuccessful) {

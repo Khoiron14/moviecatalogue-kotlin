@@ -12,4 +12,5 @@
 	<string name="favorite_added">Favorite added</string>
 	<string name="favorite_removed">Favorite removed</string>
 	<string name="no_favorites_yet">No favorites yet</string>
+	<string name="search" translatable="false">Search</string>
 </resources>
