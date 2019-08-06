@@ -13,4 +13,6 @@
 	<string name="favorite_removed">Favorite removed</string>
 	<string name="no_favorites_yet">No favorites yet</string>
 	<string name="search" translatable="false">Search</string>
+	<string name="movie_favorite">Movie Favorite</string>
+	<string name="no_data">No Data</string>
 </resources>

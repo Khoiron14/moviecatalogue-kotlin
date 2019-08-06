@@ -1,7 +1,9 @@
 package com.khoiron14.moviecatalogue.ui.detail
 
+import android.appwidget.AppWidgetManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.ComponentName
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,13 +12,13 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.R.menu.detail_menu
 import com.khoiron14.moviecatalogue.database.database
 import com.khoiron14.moviecatalogue.model.favorite.MovieFavorite
 import com.khoiron14.moviecatalogue.model.movie.Movie
+import com.khoiron14.moviecatalogue.widget.MovieFavoriteWidget
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.db.classParser
@@ -25,6 +27,7 @@ import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.design.longSnackbar
 import org.jetbrains.anko.design.snackbar
+
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -160,6 +163,7 @@ class MovieDetailActivity : AppCompatActivity() {
             menuItem?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_added_to_favorite)
         else
             menuItem?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_add_to_favorite)
+        updateWidget()
     }
 
     private fun favoriteState() {
@@ -169,5 +173,12 @@ class MovieDetailActivity : AppCompatActivity() {
             val movie = result.parseList(classParser<MovieFavorite>())
             if (movie.isNotEmpty()) isFavorite = true
         }
+    }
+
+    private fun updateWidget() {
+        val appWidgetManager = AppWidgetManager.getInstance(this)
+        val mWidget = ComponentName(this, MovieFavoriteWidget::class.java)
+        val ids = appWidgetManager.getAppWidgetIds(mWidget)
+        appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.stack_view)
     }
 }
