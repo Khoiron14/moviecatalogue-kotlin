@@ -9,15 +9,15 @@ import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.BuildConfig
 import com.khoiron14.moviecatalogue.R
 import com.khoiron14.moviecatalogue.database.database
-import com.khoiron14.moviecatalogue.model.favorite.MovieFavorite
+import com.khoiron14.moviecatalogue.model.favorite.TvShowFavorite
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.select
 
 /**
- * Created by khoiron14 on 8/6/2019.
+ * Created by khoiron14 on 8/7/2019.
  */
-class MovieRemoteViewsFactory(var context: Context) : RemoteViewsService.RemoteViewsFactory {
-    private var movieList: List<MovieFavorite> = listOf()
+class TvShowRemoteViewsFactory(var context: Context) : RemoteViewsService.RemoteViewsFactory {
+    private var tvShowList: List<TvShowFavorite> = listOf()
 
     override fun onCreate() {}
 
@@ -27,8 +27,8 @@ class MovieRemoteViewsFactory(var context: Context) : RemoteViewsService.RemoteV
 
     override fun onDataSetChanged() {
         context.database.use {
-            val result = select(MovieFavorite.TABLE_MOVIE_FAVORITE)
-            movieList = result.parseList(classParser())
+            val result = select(TvShowFavorite.TABLE_TVSHOW_FAVORITE)
+            tvShowList = result.parseList(classParser())
         }
     }
 
@@ -39,7 +39,7 @@ class MovieRemoteViewsFactory(var context: Context) : RemoteViewsService.RemoteV
 
         try {
             val bitmap =
-                Glide.with(context).asBitmap().load(BuildConfig.BASE_IMAGE_PATH_URL + movieList[p0].moviePosterPath)
+                Glide.with(context).asBitmap().load(BuildConfig.BASE_IMAGE_PATH_URL + tvShowList[p0].tvShowPosterPath)
                     .submit().get()
 
             remoteViews.setImageViewBitmap(R.id.img_poster, bitmap)
@@ -48,14 +48,14 @@ class MovieRemoteViewsFactory(var context: Context) : RemoteViewsService.RemoteV
         }
 
         val extras = Bundle()
-        extras.putInt(MovieFavoriteWidget.EXTRA_ITEM, p0)
+        extras.putInt(TvShowFavoriteWidget.EXTRA_ITEM, p0)
         val fillInIntent = Intent().putExtras(extras)
 
         remoteViews.setOnClickFillInIntent(R.id.img_poster, fillInIntent)
         return remoteViews
     }
 
-    override fun getCount(): Int = movieList.size
+    override fun getCount(): Int = tvShowList.size
 
     override fun getViewTypeCount(): Int = 1
 

@@ -1,7 +1,9 @@
 package com.khoiron14.moviecatalogue.ui.detail
 
+import android.appwidget.AppWidgetManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.ComponentName
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -16,6 +18,7 @@ import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.database.database
 import com.khoiron14.moviecatalogue.model.favorite.TvShowFavorite
 import com.khoiron14.moviecatalogue.model.tvshow.TvShow
+import com.khoiron14.moviecatalogue.widget.TvShowFavoriteWidget
 import kotlinx.android.synthetic.main.activity_tvshow_detail.*
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.db.classParser
@@ -159,6 +162,7 @@ class TvShowDetailActivity : AppCompatActivity() {
             menuItem?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_added_to_favorite)
         else
             menuItem?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_add_to_favorite)
+        updateWidget()
     }
 
     private fun favoriteState() {
@@ -168,5 +172,12 @@ class TvShowDetailActivity : AppCompatActivity() {
             val tvShowFav = result.parseList(classParser<TvShowFavorite>())
             if (tvShowFav.isNotEmpty()) isFavorite = true
         }
+    }
+
+    private fun updateWidget() {
+        val appWidgetManager = AppWidgetManager.getInstance(this)
+        val mWidget = ComponentName(this, TvShowFavoriteWidget::class.java)
+        val ids = appWidgetManager.getAppWidgetIds(mWidget)
+        appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.stack_view)
     }
 }
