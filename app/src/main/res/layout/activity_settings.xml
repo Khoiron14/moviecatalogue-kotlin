@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:padding="@dimen/padding"
+	tools:context=".ui.SettingsActivity">
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/margin">
+
+		<TextView
+			android:id="@+id/title_release_reminder"
+			style="@style/TextStyle"
+			android:layout_marginBottom="@dimen/margin_tiny"
+			android:maxLines="1"
+			android:text="@string/release_reminder" />
+
+		<TextView
+			android:id="@+id/desc_release_reminder"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/title_release_reminder"
+			android:maxLines="2"
+			android:text="@string/desc_release_reminder"
+			android:textSize="12sp" />
+
+		<android.support.v7.widget.SwitchCompat
+			android:id="@+id/sc_release_reminder"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentEnd="true"
+			android:layout_centerVertical="true" />
+	</RelativeLayout>
+
+	<RelativeLayout
+		android:id="@+id/daily_reminder"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/margin">
+
+		<TextView
+			android:id="@+id/title_daily_reminder"
+			style="@style/TextStyle"
+			android:layout_marginBottom="@dimen/margin_tiny"
+			android:maxLines="1"
+			android:text="@string/daily_reminder" />
+
+		<TextView
+			android:id="@+id/desc_daily_reminder"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/title_daily_reminder"
+			android:maxLines="2"
+			android:text="@string/desc_daily_reminder"
+			android:textSize="12sp" />
+
+		<android.support.v7.widget.SwitchCompat
+			android:id="@+id/sc_daily_reminder"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentEnd="true"
+			android:layout_centerVertical="true" />
+	</RelativeLayout>
+
+	<TextView
+		android:id="@+id/change_language_setting"
+		style="@style/TextStyle"
+		android:layout_width="match_parent"
+		android:text="@string/change_language_settings" />
+
+</LinearLayout>

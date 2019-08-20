@@ -14,4 +14,13 @@
 	<string name="movie_favorite">Film Favorit</string>
 	<string name="tvshow_favorite">Acara TV Favorit</string>
 	<string name="no_data">Tidak Ada Data</string>
+	<string name="settings">Pengaturan</string>
+	<string name="release_reminder">Pengingat Rilis</string>
+	<string name="desc_release_reminder">Pengingat menunjukkan film yang dirilis hari ini</string>
+	<string name="release_reminder_enable">Pengingat rilis nyala</string>
+	<string name="release_reminder_disable">Pengingat rilis mati</string>
+	<string name="daily_reminder">Pengingat Harian</string>
+	<string name="desc_daily_reminder">Pengingat untuk kembali ke aplikasi</string>
+	<string name="daily_reminder_enable">Pengingat harian nyala</string>
+	<string name="daily_reminder_disable">Pengingat harian mati</string>
 </resources>

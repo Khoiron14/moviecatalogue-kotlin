@@ -1,8 +1,6 @@
 package com.khoiron14.moviecatalogue.ui
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +9,7 @@ import com.khoiron14.moviecatalogue.ui.favorite.FavoriteFragment
 import com.khoiron14.moviecatalogue.ui.movie.MovieFragment
 import com.khoiron14.moviecatalogue.ui.tvshow.TvShowFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,9 +47,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_change_setting -> {
-                val intent = Intent(Settings.ACTION_LOCALE_SETTINGS)
-                startActivity(intent)
+            R.id.settings -> {
+                startActivity<SettingsActivity>()
             }
         }
         return super.onOptionsItemSelected(item)

@@ -40,6 +40,9 @@
 		</receiver>
 
 		<activity
+			android:name=".ui.SettingsActivity"
+			android:parentActivityName=".ui.MainActivity" />
+		<activity
 			android:name=".ui.detail.TvShowDetailActivity"
 			android:parentActivityName=".ui.MainActivity"
 			android:theme="@style/AppTheme.TransparentActionBar" />
