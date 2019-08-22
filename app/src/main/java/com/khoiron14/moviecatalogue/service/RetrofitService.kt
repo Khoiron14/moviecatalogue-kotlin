@@ -15,20 +15,38 @@ import retrofit2.http.Query
  */
 interface RetrofitService {
     @GET("discover/movie?api_key=${BuildConfig.API_KEY}")
-    suspend fun getMovieList(@Query("language") language: String = "en-US"): Response<MovieResponse>
+    suspend fun getMovieList(
+        @Query("language") language: String = "en-US",
+        @Query("primary_release_date.gte") primary_release_date_gte: String? = null,
+        @Query("primary_release_date.gte") primary_release_date_lte: String? = null
+    ): Response<MovieResponse>
 
     @GET("discover/tv?api_key=${BuildConfig.API_KEY}")
-    suspend fun getTvShowList(@Query("language") language: String = "en-US"): Response<TvShowResponse>
+    suspend fun getTvShowList(
+        @Query("language") language: String = "en-US"
+    ): Response<TvShowResponse>
 
     @GET("movie/{id}?api_key=${BuildConfig.API_KEY}")
-    suspend fun getMovie(@Path("id") id: Int, @Query("language") language: String = "en-US"): Response<Movie>
+    suspend fun getMovie(
+        @Path("id") id: Int,
+        @Query("language") language: String = "en-US"
+    ): Response<Movie>
 
     @GET("tv/{id}?api_key=${BuildConfig.API_KEY}")
-    suspend fun getTvShow(@Path("id") id: Int, @Query("language") language: String = "en-US"): Response<TvShow>
+    suspend fun getTvShow(
+        @Path("id") id: Int,
+        @Query("language") language: String = "en-US"
+    ): Response<TvShow>
 
     @GET("search/movie?api_key=${BuildConfig.API_KEY}")
-    suspend fun getMovieSearchList(@Query("language") language: String = "en-US", @Query("query") query: String): Response<MovieResponse>
+    suspend fun getMovieSearchList(
+        @Query("language") language: String = "en-US",
+        @Query("query") query: String
+    ): Response<MovieResponse>
 
     @GET("search/tv?api_key=${BuildConfig.API_KEY}")
-    suspend fun getTvShowSearchList(@Query("language") language: String = "en-US", @Query("query") query: String): Response<TvShowResponse>
+    suspend fun getTvShowSearchList(
+        @Query("language") language: String = "en-US",
+        @Query("query") query: String
+    ): Response<TvShowResponse>
 }

@@ -16,13 +16,15 @@
 	<string name="movie_favorite">Movie Favorite</string>
 	<string name="tvshow_favorite">Tv Show Favorite</string>
 	<string name="no_data">No Data</string>
-	<string name="settings">Setting</string>
+	<string name="settings">Settings</string>
 	<string name="release_reminder">Release Reminder</string>
 	<string name="desc_release_reminder">Reminder showing the movie that released today</string>
 	<string name="release_reminder_enable">Release reminder enable</string>
 	<string name="release_reminder_disable">Release reminder disable</string>
+	<string name="msg_release_reminder">has been release today!</string>
 	<string name="daily_reminder">Daily Reminder</string>
 	<string name="desc_daily_reminder">Reminder for return to app</string>
 	<string name="daily_reminder_enable">Daily reminder enable</string>
 	<string name="daily_reminder_disable">Daily reminder disable</string>
+	<string name="msg_daily_reminder">Movie Catalogue missing you!</string>
 </resources>

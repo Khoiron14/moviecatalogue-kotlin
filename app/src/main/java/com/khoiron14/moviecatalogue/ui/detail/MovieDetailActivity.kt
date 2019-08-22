@@ -84,7 +84,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (connectionAvaiable(this)) {
+        if (connectionAvailable(this)) {
             connected()
         } else {
             disconnected()

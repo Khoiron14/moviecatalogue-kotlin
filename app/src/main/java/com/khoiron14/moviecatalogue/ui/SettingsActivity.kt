@@ -6,18 +6,24 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 import com.khoiron14.moviecatalogue.R
+import com.khoiron14.moviecatalogue.receiver.DailyReminder
+import com.khoiron14.moviecatalogue.receiver.ReleaseReminder
 import kotlinx.android.synthetic.main.activity_settings.*
-import org.jetbrains.anko.toast
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var preferences: SharedPreferences
+    private lateinit var dailyReminder: DailyReminder
+    private lateinit var releaseReminder: ReleaseReminder
     private var stateReleaseReminder: Boolean = false
     private var stateDailyReminder: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        dailyReminder = DailyReminder()
+        releaseReminder = ReleaseReminder()
 
         preferences = getSharedPreferences("PREFS", 0)
         stateReleaseReminder = preferences.getBoolean("release_reminder", false)
@@ -32,9 +38,9 @@ class SettingsActivity : AppCompatActivity() {
                 .putBoolean("release_reminder", stateReleaseReminder)
                 .apply()
             if (stateReleaseReminder) {
-                toast(R.string.release_reminder_enable)
+                releaseReminder.setAlarm(this, resources.getString(R.string.release_reminder_enable))
             } else {
-                toast(R.string.release_reminder_disable)
+                releaseReminder.cancelAlarm(this, resources.getString(R.string.release_reminder_disable))
             }
         }
 
@@ -44,9 +50,9 @@ class SettingsActivity : AppCompatActivity() {
                 .putBoolean("daily_reminder", stateDailyReminder)
                 .apply()
             if (stateDailyReminder) {
-                toast(R.string.daily_reminder_enable)
+                dailyReminder.setAlarm(this, resources.getString(R.string.daily_reminder_enable))
             } else {
-                toast(R.string.daily_reminder_disable)
+                dailyReminder.cancelAlarm(this, resources.getString(R.string.daily_reminder_disable))
             }
         }
 

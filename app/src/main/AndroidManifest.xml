@@ -6,6 +6,8 @@
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.VIBRATE" />
 
 	<application
 		android:allowBackup="true"
@@ -38,6 +40,14 @@
 				android:name="android.appwidget.provider"
 				android:resource="@xml/tv_show_favorite_widget_info" />
 		</receiver>
+		<receiver
+			android:name=".receiver.ReleaseReminder"
+			android:enabled="true"
+			android:exported="true" />
+		<receiver
+			android:name=".receiver.DailyReminder"
+			android:enabled="true"
+			android:exported="true" />
 
 		<activity
 			android:name=".ui.SettingsActivity"

@@ -76,7 +76,7 @@ class TvShowFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        if (connectionAvaiable(activity as Activity)) {
+        if (connectionAvailable(context!!)) {
             connected()
         } else {
             disconnected()
@@ -85,7 +85,7 @@ class TvShowFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        if (connectionAvaiable(activity as Activity)) {
+        if (connectionAvailable(context!!)) {
             connected()
         } else {
             disconnected()

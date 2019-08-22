@@ -19,8 +19,10 @@
 	<string name="desc_release_reminder">Pengingat menunjukkan film yang dirilis hari ini</string>
 	<string name="release_reminder_enable">Pengingat rilis nyala</string>
 	<string name="release_reminder_disable">Pengingat rilis mati</string>
+	<string name="msg_release_reminder">telah dirilis hari ini!</string>
 	<string name="daily_reminder">Pengingat Harian</string>
 	<string name="desc_daily_reminder">Pengingat untuk kembali ke aplikasi</string>
 	<string name="daily_reminder_enable">Pengingat harian nyala</string>
 	<string name="daily_reminder_disable">Pengingat harian mati</string>
+	<string name="msg_daily_reminder">Movie Catalogue merindukanmu!</string>
 </resources>

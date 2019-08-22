@@ -37,9 +37,16 @@ fun convertDate(date: String?): String? {
     return formatDate.format(dateConvert)
 }
 
+// get the current date
+fun getDate(): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val date = Date()
+    return dateFormat.format(date)
+}
+
 // check device connection
-fun connectionAvaiable(activity: Activity): Boolean {
-    val manager: ConnectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+fun connectionAvailable(context: Context): Boolean {
+    val manager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkInfo = manager.activeNetworkInfo
     return networkInfo != null && networkInfo.isConnected
 }
