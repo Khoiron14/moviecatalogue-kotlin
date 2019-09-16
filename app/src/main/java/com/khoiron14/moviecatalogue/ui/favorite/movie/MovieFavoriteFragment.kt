@@ -2,20 +2,24 @@ package com.khoiron14.moviecatalogue.ui.favorite.movie
 
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.*
-
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.database.database
+import com.khoiron14.moviecatalogue.database.DatabaseRepository
+import com.khoiron14.moviecatalogue.database.RepositoryCallback
 import com.khoiron14.moviecatalogue.gone
 import com.khoiron14.moviecatalogue.model.favorite.MovieFavorite
 import com.khoiron14.moviecatalogue.ui.detail.MovieDetailActivity
 import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.fragment_movie_favorite.*
-import org.jetbrains.anko.db.classParser
-import org.jetbrains.anko.db.select
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.support.v4.startActivity
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -77,26 +81,44 @@ class MovieFavoriteFragment : Fragment() {
     }
 
     private fun showFavorite(query: String? = null) {
-        var movieList: List<MovieFavorite> = listOf()
+        CoroutineScope(Dispatchers.IO).launch {
+            var movieList: List<MovieFavorite>? = emptyList()
+            DatabaseRepository().getMovieFavorites(object :
+                RepositoryCallback<List<MovieFavorite>?> {
+                override fun onDataSuccess(base: List<MovieFavorite>?) {
+                    movieList = filteredData(query, base)
+                }
 
-        context?.database?.use {
-            val result = select(MovieFavorite.TABLE_MOVIE_FAVORITE)
-            movieList = result.parseList(classParser())
-        }
-
-        if (query != null) {
-            movieList = movieList.filter {
-                it.movieTitle!!.toLowerCase().contains(query.toLowerCase())
+                override fun onDataError(message: String?) {
+                    Log.e("DATA_ERROR", message!!)
+                }
+            })
+            withContext(Dispatchers.Main) {
+                movieList?.let {
+                    if (it.isNotEmpty()) {
+                        adapter.setData(it)
+                        rv_list_movie.visible()
+                        no_favorite.gone()
+                    } else {
+                        rv_list_movie.gone()
+                        no_favorite.visible()
+                    }
+                }
             }
         }
+    }
 
-        if (movieList.isNotEmpty()) {
-            adapter.setData(movieList)
-            rv_list_movie.visible()
-            no_favorite.gone()
+    private fun filteredData(
+        query: String?,
+        movieFavorites: List<MovieFavorite>?
+    ): List<MovieFavorite>? {
+        return if (query != null) {
+            movieFavorites?.filter {
+                it.title!!.toLowerCase(Locale.getDefault())
+                    .contains(query.toLowerCase(Locale.getDefault()))
+            }
         } else {
-            rv_list_movie.gone()
-            no_favorite.visible()
+            movieFavorites
         }
     }
 }

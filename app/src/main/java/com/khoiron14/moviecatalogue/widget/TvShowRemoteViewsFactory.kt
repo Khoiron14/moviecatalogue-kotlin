@@ -3,15 +3,18 @@ package com.khoiron14.moviecatalogue.widget
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.BuildConfig
 import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.database.database
+import com.khoiron14.moviecatalogue.database.DatabaseRepository
+import com.khoiron14.moviecatalogue.database.RepositoryCallback
 import com.khoiron14.moviecatalogue.model.favorite.TvShowFavorite
-import org.jetbrains.anko.db.classParser
-import org.jetbrains.anko.db.select
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Created by khoiron14 on 8/7/2019.
@@ -26,9 +29,17 @@ class TvShowRemoteViewsFactory(var context: Context) : RemoteViewsService.Remote
     override fun getItemId(p0: Int): Long = 0
 
     override fun onDataSetChanged() {
-        context.database.use {
-            val result = select(TvShowFavorite.TABLE_TVSHOW_FAVORITE)
-            tvShowList = result.parseList(classParser())
+        CoroutineScope(Dispatchers.IO).launch {
+            DatabaseRepository().getTvShowFavorites(object :
+                RepositoryCallback<List<TvShowFavorite>?> {
+                override fun onDataSuccess(base: List<TvShowFavorite>?) {
+                    tvShowList = base!!
+                }
+
+                override fun onDataError(message: String?) {
+                    Log.e("DATA_ERROR", message!!)
+                }
+            })
         }
     }
 
@@ -39,7 +50,8 @@ class TvShowRemoteViewsFactory(var context: Context) : RemoteViewsService.Remote
 
         try {
             val bitmap =
-                Glide.with(context).asBitmap().load(BuildConfig.BASE_IMAGE_PATH_URL + tvShowList[p0].tvShowPosterPath)
+                Glide.with(context).asBitmap()
+                    .load(BuildConfig.BASE_IMAGE_PATH_URL + tvShowList[p0].posterPath)
                     .submit().get()
 
             remoteViews.setImageViewBitmap(R.id.img_poster, bitmap)

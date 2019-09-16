@@ -4,7 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.khoiron14.moviecatalogue.R
 import com.khoiron14.moviecatalogue.receiver.DailyReminder
 import com.khoiron14.moviecatalogue.receiver.ReleaseReminder
@@ -38,9 +38,15 @@ class SettingsActivity : AppCompatActivity() {
                 .putBoolean("release_reminder", stateReleaseReminder)
                 .apply()
             if (stateReleaseReminder) {
-                releaseReminder.setAlarm(this, resources.getString(R.string.release_reminder_enable))
+                releaseReminder.setAlarm(
+                    this,
+                    resources.getString(R.string.release_reminder_enable)
+                )
             } else {
-                releaseReminder.cancelAlarm(this, resources.getString(R.string.release_reminder_disable))
+                releaseReminder.cancelAlarm(
+                    this,
+                    resources.getString(R.string.release_reminder_disable)
+                )
             }
         }
 
@@ -52,7 +58,10 @@ class SettingsActivity : AppCompatActivity() {
             if (stateDailyReminder) {
                 dailyReminder.setAlarm(this, resources.getString(R.string.daily_reminder_enable))
             } else {
-                dailyReminder.cancelAlarm(this, resources.getString(R.string.daily_reminder_disable))
+                dailyReminder.cancelAlarm(
+                    this,
+                    resources.getString(R.string.daily_reminder_disable)
+                )
             }
         }
 

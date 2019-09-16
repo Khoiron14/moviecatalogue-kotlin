@@ -15,10 +15,12 @@ class DailyReminder : BroadcastReceiver(), Receiver {
     override var reminderHour: Int = 7
 
     override fun onReceive(p0: Context?, p1: Intent?) {
-        showNotification(
-            p0!!,
-            p0.resources.getString(R.string.daily_reminder),
-            p0.resources.getString(R.string.msg_daily_reminder)
-        )
+        p0?.let {
+            showNotification(
+                it,
+                it.resources.getString(R.string.daily_reminder),
+                it.resources.getString(R.string.msg_daily_reminder)
+            )
+        }
     }
 }

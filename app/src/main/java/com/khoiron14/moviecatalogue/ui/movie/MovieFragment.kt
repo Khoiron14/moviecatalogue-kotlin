@@ -1,12 +1,11 @@
 package com.khoiron14.moviecatalogue.ui.movie
 
-import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.SearchView
 import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.model.movie.Movie
 import com.khoiron14.moviecatalogue.ui.detail.MovieDetailActivity
@@ -26,9 +25,10 @@ class MovieFragment : Fragment() {
         Observer<List<Movie>> { movieList ->
             if (movieList != null) {
                 adapter.setData(movieList)
-                showLoading(false, progress_bar)
             }
+            showLoading(false, progress_bar)
         }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

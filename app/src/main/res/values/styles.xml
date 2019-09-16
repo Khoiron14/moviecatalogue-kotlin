@@ -72,7 +72,7 @@
 	<style name="RecyclerViewStyle">
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">match_parent</item>
-		<item name="layoutManager">android.support.v7.widget.GridLayoutManager</item>
+		<item name="layoutManager">androidx.recyclerview.widget.GridLayoutManager</item>
 		<item name="spanCount">3</item>
 	</style>
 </resources>

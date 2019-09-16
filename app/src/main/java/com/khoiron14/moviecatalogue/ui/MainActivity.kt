@@ -1,9 +1,9 @@
 package com.khoiron14.moviecatalogue.ui
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.khoiron14.moviecatalogue.R
 import com.khoiron14.moviecatalogue.ui.favorite.FavoriteFragment
 import com.khoiron14.moviecatalogue.ui.movie.MovieFragment
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity<SettingsActivity>()
             }
         }
-        return super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item!!)
     }
 
     private fun loadMovieFragment() {
@@ -68,7 +68,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFavoriteFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, FavoriteFragment(), FavoriteFragment::class.java.simpleName)
+            .replace(
+                R.id.main_container,
+                FavoriteFragment(),
+                FavoriteFragment::class.java.simpleName
+            )
             .commit()
     }
 }

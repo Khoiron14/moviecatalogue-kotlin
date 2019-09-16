@@ -1,12 +1,11 @@
 package com.khoiron14.moviecatalogue.ui.tvshow
 
-import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.SearchView
 import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.model.tvshow.TvShow
 import com.khoiron14.moviecatalogue.ui.detail.TvShowDetailActivity
@@ -26,8 +25,8 @@ class TvShowFragment : Fragment() {
         Observer<List<TvShow>> { tvShowList ->
             if (tvShowList != null) {
                 adapter.setData(tvShowList)
-                showLoading(false, progress_bar)
             }
+            showLoading(false, progress_bar)
         }
 
     override fun onCreateView(

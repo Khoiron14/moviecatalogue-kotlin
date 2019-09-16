@@ -28,7 +28,7 @@
 			android:text="@string/desc_release_reminder"
 			android:textSize="12sp" />
 
-		<android.support.v7.widget.SwitchCompat
+		<androidx.appcompat.widget.SwitchCompat
 			android:id="@+id/sc_release_reminder"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
 			android:text="@string/desc_daily_reminder"
 			android:textSize="12sp" />
 
-		<android.support.v7.widget.SwitchCompat
+		<androidx.appcompat.widget.SwitchCompat
 			android:id="@+id/sc_daily_reminder"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

@@ -1,20 +1,23 @@
 package com.khoiron14.moviecatalogue.ui.tvshow
 
-import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.BuildConfig
 import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.database.database
+import com.khoiron14.moviecatalogue.database.DatabaseRepository
+import com.khoiron14.moviecatalogue.database.RepositoryCallback
 import com.khoiron14.moviecatalogue.model.favorite.TvShowFavorite
 import com.khoiron14.moviecatalogue.model.tvshow.TvShow
 import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.item_movie.view.*
-import org.jetbrains.anko.db.classParser
-import org.jetbrains.anko.db.select
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Created by khoiron14 on 7/3/2019.
@@ -58,12 +61,23 @@ class TvShowAdapter(private val listener: (TvShow) -> Unit) :
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(itemView.img_poster)
-            itemView.context.database.use {
-                val result = select(TvShowFavorite.TABLE_TVSHOW_FAVORITE)
-                    .whereArgs("(TVSHOW_ID = {id})", "id" to tvShow.id!!)
-                val tvShowFav = result.parseList(classParser<TvShowFavorite>())
-                if (tvShowFav.isNotEmpty()) {
-                    itemView.favorite.visible()
+            CoroutineScope(Dispatchers.IO).launch {
+                var isFavorite = false
+                DatabaseRepository().getTvShowFavorite(
+                    tvShow.id,
+                    object : RepositoryCallback<TvShowFavorite?> {
+                        override fun onDataSuccess(base: TvShowFavorite?) {
+                            if (base != null) {
+                                isFavorite = true
+                            }
+                        }
+
+                        override fun onDataError(message: String?) {
+                            Log.e("DATA_ERROR", message!!)
+                        }
+                    })
+                withContext(Dispatchers.Main) {
+                    if (isFavorite) itemView.favorite.visible()
                 }
             }
         }

@@ -2,20 +2,24 @@ package com.khoiron14.moviecatalogue.ui.favorite.tvshow
 
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.*
-
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import com.khoiron14.moviecatalogue.R
-import com.khoiron14.moviecatalogue.database.database
+import com.khoiron14.moviecatalogue.database.DatabaseRepository
+import com.khoiron14.moviecatalogue.database.RepositoryCallback
 import com.khoiron14.moviecatalogue.gone
 import com.khoiron14.moviecatalogue.model.favorite.TvShowFavorite
 import com.khoiron14.moviecatalogue.ui.detail.TvShowDetailActivity
 import com.khoiron14.moviecatalogue.visible
 import kotlinx.android.synthetic.main.fragment_tvshow_favorite.*
-import org.jetbrains.anko.db.classParser
-import org.jetbrains.anko.db.select
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.support.v4.startActivity
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -77,27 +81,44 @@ class TvShowFavoriteFragment : Fragment() {
     }
 
     private fun showFavorite(query: String? = null) {
-        var tvShowList: List<TvShowFavorite> = listOf()
+        CoroutineScope(Dispatchers.IO).launch {
+            var tvShowList: List<TvShowFavorite>? = emptyList()
+            DatabaseRepository().getTvShowFavorites(object :
+                RepositoryCallback<List<TvShowFavorite>?> {
+                override fun onDataSuccess(base: List<TvShowFavorite>?) {
+                    tvShowList = filteredData(query, base)
+                }
 
-        context?.database?.use {
-            val result = select(TvShowFavorite.TABLE_TVSHOW_FAVORITE)
-            tvShowList = result.parseList(classParser())
-            adapter.setData(tvShowList)
-        }
-
-        if (query != null) {
-            tvShowList = tvShowList.filter {
-                it.tvShowName!!.toLowerCase().contains(query.toLowerCase())
+                override fun onDataError(message: String?) {
+                    Log.e("DATA_ERROR", message!!)
+                }
+            })
+            withContext(Dispatchers.Main) {
+                tvShowList?.let {
+                    if (it.isNotEmpty()) {
+                        adapter.setData(it)
+                        rv_list_tvshow.visible()
+                        no_favorite.gone()
+                    } else {
+                        rv_list_tvshow.gone()
+                        no_favorite.visible()
+                    }
+                }
             }
         }
+    }
 
-        if (tvShowList.isNotEmpty()) {
-            adapter.setData(tvShowList)
-            rv_list_tvshow.visible()
-            no_favorite.gone()
+    private fun filteredData(
+        query: String?,
+        tvShowFavorites: List<TvShowFavorite>?
+    ): List<TvShowFavorite>? {
+        return if (query != null) {
+            tvShowFavorites?.filter {
+                it.name!!.toLowerCase(Locale.getDefault())
+                    .contains(query.toLowerCase(Locale.getDefault()))
+            }
         } else {
-            rv_list_tvshow.gone()
-            no_favorite.visible()
+            tvShowFavorites
         }
     }
 }

@@ -1,10 +1,9 @@
 package com.khoiron14.moviecatalogue.ui.favorite.movie
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.BuildConfig
 import com.khoiron14.moviecatalogue.R
@@ -46,9 +45,9 @@ class MovieFavoriteAdapter(private val listener: (MovieFavorite) -> Unit) :
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(movie: MovieFavorite) {
-            itemView.tv_title.text = movie.movieTitle
+            itemView.tv_title.text = movie.title
             Glide.with(itemView)
-                .load(BuildConfig.BASE_IMAGE_PATH_URL + movie.moviePosterPath)
+                .load(BuildConfig.BASE_IMAGE_PATH_URL + movie.posterPath)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(itemView.img_poster)

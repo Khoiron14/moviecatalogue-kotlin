@@ -1,30 +1,30 @@
 package com.khoiron14.moviecatalogue.ui.detail
 
 import android.appwidget.AppWidgetManager
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.ComponentName
-import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.khoiron14.moviecatalogue.*
 import com.khoiron14.moviecatalogue.R.menu.detail_menu
-import com.khoiron14.moviecatalogue.database.database
+import com.khoiron14.moviecatalogue.database.DatabaseRepository
+import com.khoiron14.moviecatalogue.database.RepositoryCallback
 import com.khoiron14.moviecatalogue.model.favorite.MovieFavorite
 import com.khoiron14.moviecatalogue.model.movie.Movie
 import com.khoiron14.moviecatalogue.widget.MovieFavoriteWidget
 import kotlinx.android.synthetic.main.activity_movie_detail.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.anko.contentView
-import org.jetbrains.anko.db.classParser
-import org.jetbrains.anko.db.delete
-import org.jetbrains.anko.db.insert
-import org.jetbrains.anko.db.select
 import org.jetbrains.anko.design.longSnackbar
 import org.jetbrains.anko.design.snackbar
 
@@ -46,9 +46,9 @@ class MovieDetailActivity : AppCompatActivity() {
             if (movie != null) {
                 mMovie = movie
                 loadMovieDetail(mMovie)
-                showLoading(false, progress_bar)
                 tv_text_release.visible()
             }
+            showLoading(false, progress_bar)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,12 +73,10 @@ class MovieDetailActivity : AppCompatActivity() {
             R.id.add_to_favorite -> {
                 if (::mMovie.isInitialized) {
                     if (isFavorite) removeFromFavorite() else addToFavorite()
-                    isFavorite = !isFavorite
-                    setFavorite()
                 }
                 true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item!!)
         }
     }
 
@@ -132,46 +130,75 @@ class MovieDetailActivity : AppCompatActivity() {
     }
 
     private fun addToFavorite() {
-        try {
-            database.use {
-                insert(
-                    MovieFavorite.TABLE_MOVIE_FAVORITE,
-                    MovieFavorite.MOVIE_ID to mMovie.id,
-                    MovieFavorite.MOVIE_TITLE to mMovie.title,
-                    MovieFavorite.MOVIE_POSTER_PATH to mMovie.posterPath
-                )
+        val movieFavorite = MovieFavorite(null, mMovie.id, mMovie.title, mMovie.posterPath)
+        CoroutineScope(Dispatchers.IO).launch {
+            var msg: String? = resources.getString(R.string.favorite_added)
+            DatabaseRepository().addMovieFavorite(
+                movieFavorite,
+                object : RepositoryCallback<MovieFavorite?> {
+                    override fun onDataSuccess(base: MovieFavorite?) {
+                        isFavorite = !isFavorite
+                    }
+
+                    override fun onDataError(message: String?) {
+                        msg = message
+                    }
+                })
+            withContext(Dispatchers.Main) {
+                setFavorite()
+                msg?.let { contentView?.snackbar(it) }
             }
-            contentView?.snackbar(getString(R.string.favorite_added))?.show()
-        } catch (e: SQLiteConstraintException) {
-            contentView?.snackbar(e.localizedMessage)?.show()
         }
     }
 
     private fun removeFromFavorite() {
-        try {
-            database.use {
-                delete(MovieFavorite.TABLE_MOVIE_FAVORITE, "(MOVIE_ID = {id})", "id" to id)
+        CoroutineScope(Dispatchers.IO).launch {
+            var msg: String? = resources.getString(R.string.favorite_removed)
+            DatabaseRepository().removeMovieFavorite(
+                id,
+                object : RepositoryCallback<Int?> {
+                    override fun onDataSuccess(base: Int?) {
+                        isFavorite = !isFavorite
+                    }
+
+                    override fun onDataError(message: String?) {
+                        msg = message
+                    }
+                })
+            withContext(Dispatchers.Main) {
+                setFavorite()
+                msg?.let { contentView?.snackbar(it) }
             }
-            contentView?.snackbar(getString(R.string.favorite_removed))?.show()
-        } catch (e: SQLiteConstraintException) {
-            contentView?.snackbar(e.localizedMessage)?.show()
         }
     }
 
     private fun setFavorite() {
         if (isFavorite)
-            menuItem?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_added_to_favorite)
+            menuItem?.getItem(0)?.icon =
+                ContextCompat.getDrawable(this, R.drawable.ic_added_to_favorite)
         else
-            menuItem?.getItem(0)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_add_to_favorite)
+            menuItem?.getItem(0)?.icon =
+                ContextCompat.getDrawable(this, R.drawable.ic_add_to_favorite)
         updateWidget()
     }
 
     private fun favoriteState() {
-        database.use {
-            val result = select(MovieFavorite.TABLE_MOVIE_FAVORITE)
-                .whereArgs("(MOVIE_ID = {id})", "id" to id)
-            val movie = result.parseList(classParser<MovieFavorite>())
-            if (movie.isNotEmpty()) isFavorite = true
+        CoroutineScope(Dispatchers.IO).launch {
+            var msg: String? = null
+            DatabaseRepository().getMovieFavorite(
+                id,
+                object : RepositoryCallback<MovieFavorite?> {
+                    override fun onDataSuccess(base: MovieFavorite?) {
+                        if (base != null) isFavorite = true
+                    }
+
+                    override fun onDataError(message: String?) {
+                        msg = message
+                    }
+                })
+            withContext(Dispatchers.Main) {
+                msg?.let { contentView?.snackbar(it) }
+            }
         }
     }
 

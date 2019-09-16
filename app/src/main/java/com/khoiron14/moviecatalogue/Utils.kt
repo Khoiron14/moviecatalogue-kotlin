@@ -1,13 +1,11 @@
 package com.khoiron14.moviecatalogue
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.net.ConnectivityManager
-import android.support.v4.os.ConfigurationCompat
 import android.view.View
 import android.widget.ProgressBar
-
+import androidx.core.os.ConfigurationCompat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,7 +44,8 @@ fun getDate(): String {
 
 // check device connection
 fun connectionAvailable(context: Context): Boolean {
-    val manager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val manager: ConnectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkInfo = manager.activeNetworkInfo
     return networkInfo != null && networkInfo.isConnected
 }
